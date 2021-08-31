@@ -76,16 +76,16 @@ void send_message(int destination, int start_index, const char* contents) {
 }
 
 int main() {
-    int read_value;
-    char buffer[1024] = {0};
     int index = 0;
-    const char *message = "Hello from server";
+    const char *message = "Hello from server, I can't think today";
+    char len[4] = {0};
+    sprintf(len, "%lu", strlen(message));
 
+    // Establish the connection with the client
     int client = connectToClient();
 
     // Begin communications with the client
-    read_value = read( client , buffer, 1024);
-    printf("%s\n",buffer );
+    send(client, len, strlen(len), 0);
 
     while (index < strlen(message)) {
         send_message(client, index, message);

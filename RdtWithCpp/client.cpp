@@ -2,7 +2,12 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 #define PORT 8080
 
@@ -44,23 +49,31 @@ void send_message(int destination, const char* contents) {
     printf("Hello message sent\n");
 }
 
-int main(int argc, char const *argv[])
-{
-    int read_value;
-    const char* hello = "Hello from client";
+int main(int argc, char const *argv[]) {
+    int read_value, message_len, index = 0;
     char buffer[5] = {0};
     char message[16] = {0};
 
     int server = connectToServer();
 
     // Begin communications with the server
-    send_message(server, hello);
+    read_value = read( server, buffer, 4);
+    sscanf(buffer, "%d", &message_len);
+    printf("%d\n", message_len);
 
-    
-    for (int i = 0; i < 4; i++) {
-        read_value = read( server , buffer, 4);
-        printf("Received: %s\n",buffer );
-        sprintf(message, "%s%s", message, buffer);
+    while (index < message_len) {
+        for (int i = 0; i < 4; i++) {
+            read_value = read( server , buffer, 4);
+            printf("Received: %s\n",buffer );
+            sprintf(message, "%s%s", message, buffer);
+            memset(buffer, 0, sizeof buffer);
+            index += 4;
+            if (index >= message_len) {
+                break;
+                // Break is smelly
+            }
+        }
+        
     }
     printf("%s\n", message);
 
