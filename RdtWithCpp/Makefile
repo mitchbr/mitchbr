@@ -1,7 +1,10 @@
-all: Server Client
+all: Server Client Packet
 
 Server: server.cpp
-	gcc -Wall -o server server.cpp
+	g++ -Wall -o server server.cpp
 
 Client: client.cpp
-	gcc -Wall -o client client.cpp
+	g++ -Wall -o client client.cpp
+
+Packet: packet.cpp
+	g++ -Wall -o packet packet.cpp
