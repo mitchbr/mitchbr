@@ -34,7 +34,6 @@ class Packet {
     }
 
     void fromString(string rawData) {
-        // TODO: Get fromString working
         string seqNumStr, ackNumStr;
         for (int i = 0; i < rawData.length(); i++) {
             if (i < 3)
@@ -49,10 +48,20 @@ class Packet {
     }
 
     void calcChecksum() {
-        // TODO: Calculate checksum of data
         for (int i = 0; i < data.length(); i++) {
             checksum += (int)data[i];
         }
+    }
+
+    bool verifyChecksum() {
+        int newChecksum = 0;
+        for (int i = 0; i < data.length(); i++) {
+            newChecksum += (int)data[i];
+        }
+        if (newChecksum != checksum)
+            return false;
+        else
+            return true;
     }
 
     int dataLen() {
@@ -72,4 +81,7 @@ int main() {
     cout << z.data << endl;
     z.calcChecksum();
     printf("%d\n", z.checksum);
+    z.data = "hiy!";
+    bool isTrue = z.verifyChecksum();
+    printf("%d\n", isTrue);
 }
