@@ -6,5 +6,5 @@ Server: server.cpp
 Client: client.cpp
 	g++ -Wall -o client client.cpp
 
-Packet: packet.cpp
-	g++ -Wall -o packet packet.cpp
+Packet: testPacket.cpp
+	g++ -Wall -o testPacket testPacket.cpp
