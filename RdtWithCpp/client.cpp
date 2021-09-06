@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 
+#include "packet.h"
+
 using namespace std;
 
 #define PORT 8080
@@ -49,33 +51,43 @@ void send_message(int destination, const char* contents) {
     printf("Hello message sent\n");
 }
 
-int main(int argc, char const *argv[]) {
-    int read_value, message_len, index = 0;
+string recv_message(int source, int message_len) {
+    int read_value, index = 0;
+    string message;
     char buffer[5] = {0};
-    char message[16] = {0};
-
-    int server = connectToServer();
-
-    // Begin communications with the server
-    read_value = read( server, buffer, 4);
-    sscanf(buffer, "%d", &message_len);
-    printf("%d\n", message_len);
 
     while (index < message_len) {
         for (int i = 0; i < 4; i++) {
-            read_value = read( server , buffer, 4);
-            printf("Received: %s\n",buffer );
-            sprintf(message, "%s%s", message, buffer);
+            read_value = read( source , buffer, 4);
+            printf("Received: %s\n", buffer );
+            message += buffer;
             memset(buffer, 0, sizeof buffer);
             index += 4;
             if (index >= message_len) {
-                break;
-                // Break is smelly
+                return message;
             }
-        }
-        
+        } 
     }
-    printf("%s\n", message);
+    return message;
+}
+
+int main(int argc, char const *argv[]) {
+    int message_len, read_value;
+    string message;
+    char buffer[5];
+
+    // Connect to the server
+    int server = connectToServer();
+
+    // Get the message length from the server
+    read_value = read( server, buffer, 4);
+    sscanf(buffer, "%d", &message_len);
+
+    // Begin communications with the server
+    message += recv_message( server, message_len );
+
+
+    cout << message << endl;
 
     return 0;
 }

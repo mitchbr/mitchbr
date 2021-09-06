@@ -65,14 +65,14 @@ int connectToClient() {
 }
 
 void send_message(int destination, int start_index, const char* contents) {
-    char* packet = (char*) malloc(5);
+    char packet[5] = {0};
     
     for (int i = 0; i < 4; i++) {
         sprintf(packet, "%.*s", 4, contents + start_index + 4*i);
         printf("Packet: %s\n", packet);
         send(destination , packet , strlen(packet) , 0 );
+        memset(packet, 0, sizeof packet);
     }
-    printf("Hello message sent\n");
 }
 
 int main() {
