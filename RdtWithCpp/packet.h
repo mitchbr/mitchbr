@@ -88,4 +88,12 @@ class Packet {
     int dataLen() {
         return data.length( );
     }
+
+    void resetPacket() {
+        seqNum = 0;
+        ackNum = 0;
+        checksum = 0;
+        data = "";
+        packet = "";
+    }
 };

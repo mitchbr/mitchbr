@@ -16,10 +16,10 @@ using namespace std;
 class Client {
     public:
         int message_len, read_value, server, index;
-        string message;
+        string message, packets[4];
         char buffer[13];
     
-    void initConnection() {
+    void initClient() {
         cout << "Connecting to server..." << endl;
         // Connect to the server
         server = connectToServer();
@@ -66,44 +66,60 @@ class Client {
         return sock;
     }
     
-    void send_message(int destination, const char* contents) {
+    void sendMessage(int destination, const char* contents) {
         send(destination , contents , strlen(contents) , 0 );
         printf("Hello message sent\n");
     }
 
-    string recv_message() {
+    void processComms() {
+        while (index < message_len) {
+            recvMessage( );
+            processPackets( );
+            cout << "Message: ";
+            printMessage();
+        }
+    }
+
+    void recvMessage() {
         int read_value;
         string message;
         char buffer[14] = {0};
-        Packet packet;
-
 
         for (int i = 0; i < 4; i++) {
             if (index >= message_len) {
-                return message;
+                packets[i] = "";
             }
-
-            read_value = read( server , buffer, 13);
-            printf("Received: %s\n", buffer );
-            packet.fromString( buffer );
-            message += packet.data;
-            memset(buffer, 0, sizeof buffer);
-            index += 4;
-            
-
-            // Reset packet
-            // TODO: Do this somewhere else
-            packet.packet = "";
-            packet.data = "";
+            else {
+                read_value = read( server , buffer, 13);
+                printf("Received: %s\n", buffer );
+                packets[i]= buffer;
+                memset(buffer, 0, sizeof buffer);
+                index += 4;
+            }
         }
-        return message;
     }
 
-    void processComms() {
-        while (index < message_len) {
-            message += recv_message( );
-            cout << "Message: ";
-            printMessage();
+    void processPackets() {
+        Packet packet;
+        bool checksumCheck;
+        int i = 0;
+
+        while (!packets[i].empty() && i < 4) {
+            // get packet from string data
+            packet.fromString(packets[i]);
+
+            // Verify the checksum
+            checksumCheck = packet.verifyChecksum();
+
+            if (checksumCheck) {
+                // Add data to the message and send an ACK message
+                message += packet.data;
+
+                // TODO: Send ack from seqNum
+            }
+
+            packet.resetPacket();
+            i++;
         }
     }
 
@@ -114,7 +130,7 @@ class Client {
 
 int main(int argc, char const *argv[]) {
     Client client;
-    client.initConnection();
+    client.initClient();
 
     client.processComms();
 
