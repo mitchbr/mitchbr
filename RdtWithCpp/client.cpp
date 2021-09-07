@@ -65,10 +65,6 @@ class Client {
 
         return sock;
     }
-    
-    void sendMessage(int destination, const char* contents) {
-        printf("Hello message sent\n");
-    }
 
     void processComms() {
         while (index < message_len) {
@@ -115,6 +111,8 @@ class Client {
                 message += packet.data;
 
                 sendAck(packet.seqNum);
+            } else {
+                message += "0000";
             }
 
             packet.resetPacket();
@@ -123,7 +121,6 @@ class Client {
     }
 
     void sendAck(int seqNum) {
-        // TODO: Send ack messages
         Packet ackPacket;
         ackPacket.seqNum = 0;
         ackPacket.ackNum = seqNum;

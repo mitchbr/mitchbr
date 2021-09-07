@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
+#include <time.h>
 #include <netinet/in.h>
 #include <string.h>
 #include <iostream>
@@ -17,7 +18,7 @@ using namespace std;
 class Server {
     public:
         int index, client;
-        string message;
+        string message, strPacket[4];
         char len[4];
 
     void initServer(string text) {
@@ -25,6 +26,9 @@ class Server {
         index = 0;
         message = text;
         sprintf(len, "%lu", message.length());
+
+        // Seed random vars
+        srand( time( NULL ) );
 
         // Connect to client
         client = connectToClient();
@@ -98,28 +102,38 @@ class Server {
     void sendMessage(int destination, string contents) {
         char data[5] = {0};
         Packet packet;
-        string str_packet;
         
+        // Create packet strings
         for (int i = 0; i < 4; i++) {
-            if (index > message.length())
-                return;
-            
-            // Collect packet data
-            sprintf(data, "%.*s", 4, contents.c_str() + index);
-            packet.data = data;
-            packet.seqNum = index/4;
-            packet.ackNum = 0;
-            packet.calcChecksum();
-            str_packet = packet.toString();
+            if (index > message.length()) {
+                strPacket[i] = "";
+            } else {
+                
+                // Collect packet data
+                sprintf(data, "%.*s", 4, contents.c_str() + index);
+                packet.data = data;
+                packet.seqNum = index/4;
+                packet.ackNum = 0;
+                packet.calcChecksum();
+                strPacket[i] = packet.toString();
 
-            // Send the packet to the client
-            cout << "Packet: " << str_packet << endl;
-            send(destination , str_packet.c_str() , 13 , 0 );
+                // Reset data for the next packet
+                memset(data, 0, sizeof data);
+                packet.resetPacket();
+                index += 4;
+            }
+        }
+        
+        // Make the data unreliable
+        scrambleData();
 
-            // Reset data for the next packet
-            memset(data, 0, sizeof data);
-            packet.resetPacket();
-            index += 4;
+        // Once the data has been tampered, send packets
+        for (int i = 0; i < 4; i++) {
+            if (!strPacket[i].empty()) {
+                // Send the packet to the client
+                cout << "Packet: " << strPacket[i] << endl;
+                send(destination , strPacket[i].c_str() , 13 , 0 );
+            }
         }
     }
 
@@ -128,9 +142,30 @@ class Server {
         char buffer[13];
 
         for (int i = 0; i < 4; i++) {
+            // TODO: Somehow time this out if there are less than 4 ACKs
             readValue = read( client, buffer, 12 );
             cout << "ACK received: " << buffer << endl;
         }
+    }
+
+    void scrambleData() {
+        // Data scramble part 1: sending packets out of order
+        // Randomly decide which packets to swap
+        int swap1 = rand() % 4;
+        int swap2 = rand() % 4;
+
+        // Swap packets
+        string temp = strPacket[swap1];
+        strPacket[swap1] = strPacket[swap2];
+        strPacket[swap2] = temp;
+
+        // Data scramble part 2: drop packets
+        // TODO: implement
+
+        // Data scramble part 2: devalidate data
+        int scramble = rand() % 4;
+        strPacket[scramble].at(10) = 'x';
+
     }
 };
 
