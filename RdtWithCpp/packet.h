@@ -15,7 +15,7 @@ class Packet {
 
         /* Convert the packet data into a single string to be sent between client and server
          * Packet structure will appear as such:
-         * 0000111122223333
+         * 0001112223333
          * Where:
          *  - 0's represent sequence number values
          *  - 1's represent ack number values
