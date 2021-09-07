@@ -17,14 +17,14 @@ using namespace std;
 class Server {
     public:
         int index, client;
-        char* message;
+        string message;
         char len[4];
 
-    void initServer(char* text) {
+    void initServer(string text) {
         // Init public variables
         index = 0;
         message = text;
-        sprintf(len, "%lu", strlen(message));
+        sprintf(len, "%lu", message.length());
 
         // Connect to client
         client = connectToClient();
@@ -89,22 +89,23 @@ class Server {
     }
 
     void processComms() {
-        while (index < strlen(message)) {
-            send_message(client, message);
+        while (index < message.length()) {
+            sendMessage(client, message);
+            recvAck();
         }
     }
 
-    void send_message(int destination, const char* contents) {
+    void sendMessage(int destination, string contents) {
         char data[5] = {0};
         Packet packet;
         string str_packet;
         
         for (int i = 0; i < 4; i++) {
-            if (index > strlen(message))
+            if (index > message.length())
                 return;
             
             // Collect packet data
-            sprintf(data, "%.*s", 4, contents + index);
+            sprintf(data, "%.*s", 4, contents.c_str() + index);
             packet.data = data;
             packet.seqNum = index/4;
             packet.ackNum = 0;
@@ -117,16 +118,24 @@ class Server {
 
             // Reset data for the next packet
             memset(data, 0, sizeof data);
-            packet.packet = ""; // TODO: reset packet.packet somewhere else
+            packet.resetPacket();
             index += 4;
         }
     }
 
+    void recvAck() {
+        int readValue;
+        char buffer[13];
+
+        for (int i = 0; i < 4; i++) {
+            readValue = read( client, buffer, 12 );
+            cout << "ACK received: " << buffer << endl;
+        }
+    }
 };
 
 int main() {
-    char *message;
-    message = "Hello from server, I can't think today";
+    string message = "Hello from server, I can't think today";
     Server server;
 
     server.initServer(message);

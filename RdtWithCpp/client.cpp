@@ -67,7 +67,6 @@ class Client {
     }
     
     void sendMessage(int destination, const char* contents) {
-        send(destination , contents , strlen(contents) , 0 );
         printf("Hello message sent\n");
     }
 
@@ -81,7 +80,7 @@ class Client {
     }
 
     void recvMessage() {
-        int read_value;
+        int readValue;
         string message;
         char buffer[14] = {0};
 
@@ -90,7 +89,7 @@ class Client {
                 packets[i] = "";
             }
             else {
-                read_value = read( server , buffer, 13);
+                readValue = read( server , buffer, 13);
                 printf("Received: %s\n", buffer );
                 packets[i]= buffer;
                 memset(buffer, 0, sizeof buffer);
@@ -115,12 +114,25 @@ class Client {
                 // Add data to the message and send an ACK message
                 message += packet.data;
 
-                // TODO: Send ack from seqNum
+                sendAck(packet.seqNum);
             }
 
             packet.resetPacket();
             i++;
         }
+    }
+
+    void sendAck(int seqNum) {
+        // TODO: Send ack messages
+        Packet ackPacket;
+        ackPacket.seqNum = 0;
+        ackPacket.ackNum = seqNum;
+        ackPacket.checksum = 0;
+        ackPacket.data = "ack";
+
+        string ackStr = ackPacket.toString();
+
+        send( server , ackStr.c_str() , 12 , 0 );
     }
 
     void printMessage() {

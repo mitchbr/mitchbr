@@ -10,6 +10,13 @@ class Packet {
         int checksum;
         string data;
         string packet;
+
+    void initPacket(int rawSeqNum, int rawAckNum, string rawData) {
+        // TODO: implement initPacket()
+        seqNum = rawSeqNum;
+        ackNum = rawAckNum;
+        data = rawData;
+    }
     
     string toString() {
 
