@@ -90,21 +90,23 @@ class Server {
 
     void processComms() {
         while (index < strlen(message)) {
-            send_message(client, index, message);
-            index += 16;
+            send_message(client, message);
         }
     }
 
-    void send_message(int destination, int start_index, const char* contents) {
+    void send_message(int destination, const char* contents) {
         char data[5] = {0};
         Packet packet;
         string str_packet;
         
         for (int i = 0; i < 4; i++) {
+            if (index > strlen(message))
+                return;
+            
             // Collect packet data
-            sprintf(data, "%.*s", 4, contents + start_index + 4*i);
+            sprintf(data, "%.*s", 4, contents + index);
             packet.data = data;
-            packet.seqNum = 1;
+            packet.seqNum = index/4;
             packet.ackNum = 0;
             packet.calcChecksum();
             str_packet = packet.toString();
@@ -116,9 +118,9 @@ class Server {
             // Reset data for the next packet
             memset(data, 0, sizeof data);
             packet.packet = ""; // TODO: reset packet.packet somewhere else
+            index += 4;
         }
     }
-
 
 };
 
