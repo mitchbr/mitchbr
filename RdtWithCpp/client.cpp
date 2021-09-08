@@ -108,7 +108,7 @@ class Client {
 
             if (checksumCheck) {
                 // Add data to the message and send an ACK message
-                message += packet.data;
+                reassembleMessage(packet);
 
                 sendAck(packet.seqNum);
             } else {
@@ -118,6 +118,21 @@ class Client {
             packet.resetPacket();
             i++;
         }
+    }
+
+    void reassembleMessage(Packet packet) {
+        if (packet.seqNum * 4 == message.length()) {
+            message += packet.data;
+        } else if (packet.seqNum * 4 > message.length()) {
+            int currLength = message.length();
+            for (int i = 0; i < packet.seqNum * 4 - currLength; i++ ) {
+                message += '0';
+            }
+            message += packet.data;
+        } else {
+            message.replace(packet.seqNum*4, 4, packet.data);
+        }
+        
     }
 
     void sendAck(int seqNum) {

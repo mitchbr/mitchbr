@@ -20,8 +20,13 @@ class Server {
         int index, client;
         string message, strPacket[4];
         char len[4];
+        bool swap, drop, scramble;
 
-    void initServer(string text) {
+    void initServer(string text, bool swapPackets, bool dropPackets, bool scrambleData) {
+        swap = swapPackets;
+        drop = dropPackets;
+        scramble = scrambleData;
+
         // Init public variables
         index = 0;
         message = text;
@@ -125,7 +130,7 @@ class Server {
         }
         
         // Make the data unreliable
-        scrambleData();
+        unreliableData();
 
         // Once the data has been tampered, send packets
         for (int i = 0; i < 4; i++) {
@@ -148,23 +153,33 @@ class Server {
         }
     }
 
-    void scrambleData() {
+    void unreliableData() {
         // Data scramble part 1: sending packets out of order
-        // Randomly decide which packets to swap
-        int swap1 = rand() % 4;
-        int swap2 = rand() % 4;
+        if (swap) {
+            // Randomly decide which packets to swap
+            int swapIndex1 = rand() % 4;
+            int swapIndex2 = rand() % 4;
 
-        // Swap packets
-        string temp = strPacket[swap1];
-        strPacket[swap1] = strPacket[swap2];
-        strPacket[swap2] = temp;
+            // Swap packets
+            string temp = strPacket[swapIndex1];
+            strPacket[swapIndex1] = strPacket[swapIndex2];
+            strPacket[swapIndex2] = temp;
+        }
 
         // Data scramble part 2: drop packets
-        // TODO: implement
+        if (drop) {
+            int dropIndex = rand() % 10;
+            // There is a 40% chance a packet will be dropped
+            if (dropIndex < 4) {
+                strPacket[dropIndex] = "";
+            }
+        }
 
-        // Data scramble part 2: devalidate data
-        int scramble = rand() % 4;
-        strPacket[scramble].at(10) = 'x';
+        if (scramble) {
+            // Data scramble part 2: devalidate data
+            int scrambleIndex = rand() % 4;
+            strPacket[scrambleIndex].at(10) = 'x';
+        }
 
     }
 };
@@ -173,7 +188,13 @@ int main() {
     string message = "Hello from server, I can't think today";
     Server server;
 
-    server.initServer(message);
+    // TODO: Make booleans more obvious
+    /* Bool values here:
+     *  - swap packets
+     *  - drop packets
+     *  - scramble data
+     */
+    server.initServer(message, true, false, false);
 
     server.processComms();
 
