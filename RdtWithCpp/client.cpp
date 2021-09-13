@@ -37,6 +37,11 @@ class Client {
         int sock = 0;
         struct sockaddr_in server_address;
 
+        int timeout = 2;
+        struct timeval timev;
+        timev.tv_sec = timeout;
+        timev.tv_usec = 0;
+
         // Create the client socket
         if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         {
@@ -121,6 +126,7 @@ class Client {
     }
 
     void reassembleMessage(Packet packet) {
+        // Fix packets sent out of order
         if (packet.seqNum * 4 == message.length()) {
             message += packet.data;
         } else if (packet.seqNum * 4 > message.length()) {

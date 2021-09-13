@@ -1,12 +1,12 @@
-#include <unistd.h>
+#include <iostream>
 #include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <time.h>
 #include <netinet/in.h>
 #include <string.h>
-#include <iostream>
 #include <string>
+#include <unistd.h>
 
 #include "packet.h"
 
@@ -50,6 +50,11 @@ class Server {
         int opt = 1;
         int addrlen = sizeof(address);
 
+        int timeout = 2;
+        struct timeval timev;
+        timev.tv_sec = timeout;
+        timev.tv_usec = 0;
+
         // Create the server socket
         if ((server_socket = socket(AF_INET, SOCK_STREAM, 0)) == 0)
         {
@@ -58,7 +63,7 @@ class Server {
         }
 
         // Attach the server to the defined PORT
-        if (setsockopt(server_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)))
+        if (setsockopt(server_socket, SOL_SOCKET, SO_RCVTIMEO, &timev, sizeof(struct timeval))) // SO_REUSEADDR, &opt, sizeof(opt)
         {
             perror("setsockopt");
             exit(EXIT_FAILURE);
