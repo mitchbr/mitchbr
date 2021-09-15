@@ -19,6 +19,9 @@ class Client {
         string message, packets[4];
         char buffer[13];
     
+    /*
+     * Client constructor function
+     */
     void initClient() {
         cout << "Connecting to server..." << endl;
         // Connect to the server
@@ -31,6 +34,11 @@ class Client {
         index = 0;
     }
 
+    /*
+     * Connect to the server
+     *
+     * @return The value of the server's connection
+     */
     int connectToServer() {
         // REF: https://www.geeksforgeeks.org/socket-programming-cc/
 
@@ -71,6 +79,9 @@ class Client {
         return sock;
     }
 
+    /*
+     * Send data and receive ack message until the message is sent
+     */
     void processComms() {
         while (index < message_len) {
             recvMessage( );
@@ -80,6 +91,9 @@ class Client {
         }
     }
 
+    /*
+     * Receive data packets from the server
+     */
     void recvMessage() {
         int readValue;
         string message;
@@ -99,6 +113,9 @@ class Client {
         }
     }
 
+    /* 
+     * Verify packets, send ack messages
+     */
     void processPackets() {
         Packet packet;
         bool checksumCheck;
@@ -125,6 +142,11 @@ class Client {
         }
     }
 
+    /*
+     * Concatenate received data
+     *
+     * @param packet the packet to be processed
+     */
     void reassembleMessage(Packet packet) {
         // Fix packets sent out of order
         if (packet.seqNum * 4 == message.length()) {
@@ -141,6 +163,11 @@ class Client {
         
     }
 
+    /*
+     * Send acknowledgment messages to the server
+     *
+     * @param seqNum the sequence number of the packet received
+     */
     void sendAck(int seqNum) {
         Packet ackPacket;
         ackPacket.seqNum = 0;
@@ -153,6 +180,9 @@ class Client {
         send( server , ackStr.c_str() , 12 , 0 );
     }
 
+    /*
+     * Print out message data
+     */
     void printMessage() {
         cout << message << endl;
     }

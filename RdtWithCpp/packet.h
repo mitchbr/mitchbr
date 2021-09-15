@@ -11,6 +11,12 @@ class Packet {
         string data;
         string packet;
 
+    /* Class constructor function
+     *
+     * @param rawSeqNum The packet sequence number
+     * @param rawAckNum The packet ackgnowledgement number
+     * @param rawData The packet data
+     */
     void initPacket(int rawSeqNum, int rawAckNum, string rawData) {
         // TODO: implement initPacket()
         seqNum = rawSeqNum;
@@ -18,18 +24,18 @@ class Packet {
         data = rawData;
     }
     
+    /* Convert the packet data into a single string to be sent between client and server
+     * Packet structure will appear as such:
+     * 0001112223333
+     * Where:
+     *  - 0's represent sequence number values
+     *  - 1's represent ack number values
+     *  - 2's represent checusm values
+     *  - 3's represent the data of the packet
+     * 
+     * @return Packet data converted to a single string
+     */
     string toString() {
-
-        /* Convert the packet data into a single string to be sent between client and server
-         * Packet structure will appear as such:
-         * 0001112223333
-         * Where:
-         *  - 0's represent sequence number values
-         *  - 1's represent ack number values
-         *  - 2's represent checusm values
-         *  - 3's represent the data of the packet
-         */
-
         // Add the sequence number to the string
         string seqNumStr = to_string( seqNum );
         for ( int i = 0; i < 3-seqNumStr.length( ) ; i++ ) {
@@ -57,6 +63,11 @@ class Packet {
         return packet;
     }
 
+    /*
+     * Convert a packet string into a packet object
+     * 
+     * @param rawData The packet in string form
+     */
     void fromString(string rawData) {
         string seqNumStr, ackNumStr, checksumStr;
         for ( int i = 0; i < rawData.length( ); i++ ) {
@@ -74,6 +85,9 @@ class Packet {
         checksum = stoi( checksumStr );
     }
 
+    /*
+     * Calculate the checksum value for the packet data
+     */
     void calcChecksum() {
         checksum = 0;
         for ( int i = 0; i < data.length( ); i++ ) {
@@ -81,6 +95,9 @@ class Packet {
         }
     }
 
+    /*
+     * Verify the packet checksum value
+     */
     bool verifyChecksum() {
         int newChecksum = 0;
         for ( int i = 0; i < data.length( ); i++ ) {
@@ -92,10 +109,18 @@ class Packet {
             return true;
     }
 
+    /*
+     * Get the length of the data string
+     *
+     * @return The length of the data string
+     */
     int dataLen() {
         return data.length( );
     }
 
+    /*
+     * Reset the packet data to be blank
+     */
     void resetPacket() {
         seqNum = 0;
         ackNum = 0;

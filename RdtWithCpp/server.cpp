@@ -22,6 +22,14 @@ class Server {
         char len[4];
         bool swap, drop, scramble;
 
+    /*
+     * Server constructor function
+     *
+     * @param text Message data to be sent to the user
+     * @param swapPackets Toggles packets being sent out of order
+     * @param dropPackets Toggles packets never being sent to the client
+     * @param scrambleData Toggles data in packets being invalidated
+     */
     void initServer(string text, bool swapPackets, bool dropPackets, bool scrambleData) {
         swap = swapPackets;
         drop = dropPackets;
@@ -42,12 +50,16 @@ class Server {
         send(client, len, 4, 0);
     }
 
+    /*
+     * Connect to the client
+     *
+     * @return The value of the client's connection
+     */
     int connectToClient() {
         // REF: https://www.geeksforgeeks.org/socket-programming-cc/
         
         int server_socket, client_connect;
         struct sockaddr_in address;
-        int opt = 1;
         int addrlen = sizeof(address);
 
         int timeout = 2;
@@ -102,6 +114,9 @@ class Server {
         return client_connect;
     }
 
+    /*
+     * Send data and receive ack message until the message is sent
+     */
     void processComms() {
         while (index < message.length()) {
             sendMessage(client, message);
@@ -109,6 +124,12 @@ class Server {
         }
     }
 
+    /*
+     * Send a group of packets to the user
+     *
+     * @param destination The value of the client's connection
+     * @param contents The data string to be encapsulated in a packet
+     */
     void sendMessage(int destination, string contents) {
         char data[5] = {0};
         Packet packet;
@@ -147,6 +168,10 @@ class Server {
         }
     }
 
+    /*
+     * Receive and ack message and send new packets if necessary
+     */
+    // TODO: Send packets if dropped/invalid
     void recvAck() {
         int readValue;
         char buffer[13];
@@ -158,6 +183,9 @@ class Server {
         }
     }
 
+    /*
+     * Tamper the data to simulate unreliable data transmission
+     */
     void unreliableData() {
         // Data scramble part 1: sending packets out of order
         if (swap) {
