@@ -55,9 +55,3 @@ class Trader:
         :return:
         """
         pass
-
-
-if __name__ == "__main__":
-    trade = Trader(tickers="UBER")
-    trade.get_seven_day_avg()
-    trade.graph_data()
