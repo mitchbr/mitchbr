@@ -5,6 +5,11 @@ class RecipesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text('Recipes'));
+    return Container(
+        child: Scaffold(
+            body: Text('Recipes'),
+            floatingActionButton: FloatingActionButton(
+                onPressed: () => print('Adding a recipe'),
+                child: Icon(Icons.add))));
   }
 }
