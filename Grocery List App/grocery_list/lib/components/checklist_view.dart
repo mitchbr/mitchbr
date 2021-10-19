@@ -1,93 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_list/components/grocery_entry.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:flutter/services.dart' show rootBundle;
-
-import 'new_checklist_item.dart';
 
 class ChecklistView extends StatefulWidget {
-  const ChecklistView({Key? key}) : super(key: key);
-
   @override
-  State<ChecklistView> createState() => _ChecklistViewState();
+  _ChecklistViewState createState() => _ChecklistViewState();
 }
 
 class _ChecklistViewState extends State<ChecklistView> {
-  var bodyWidget;
-  var groceryChecklist;
-  var sqlCreate;
+  late int _itemCount;
+  late List<Map<String, dynamic>> _values;
 
-  void loadSqlStartup() async {
-    sqlCreate = await rootBundle.loadString('assets/groceries.txt');
-  }
-
-  void loadEntries() async {
-    loadSqlStartup();
-    var db = await openDatabase('groceries.db', version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute(sqlCreate);
-    });
-    List<Map> entries = await db.rawQuery('SELECT * FROM grocery_checklist');
-    final entriesList = entries.map((record) {
-      return GroceryEntry(
-          item: record['item'], amount: record['amount'], show: record['show']);
-    }).toList();
-    setState(() {
-      groceryChecklist = entriesList;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _itemCount = 0;
+    _values = [];
   }
 
   @override
   Widget build(BuildContext context) {
-    loadEntries();
     return Container(
         child: Scaffold(
-            body: showBodyWidget(),
-            floatingActionButton: FloatingActionButton(
-                onPressed: () => pushNewChecklistItem(context),
-                child: Icon(Icons.add))));
+            body: Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Flexible(
+                        child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _itemCount,
+                      itemBuilder: (context, index) {
+                        return checkListItem(index);
+                      },
+                    )),
+                    SizedBox(height: 20.0),
+                    TextButton(
+                        onPressed: () async {
+                          setState(() {
+                            _itemCount++;
+                          });
+                        },
+                        child: Row(children: [
+                          Icon(Icons.add),
+                          Text(
+                            'Add Item',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ])),
+                  ],
+                ))));
   }
 
-  Widget showBodyWidget() {
-    if (groceryChecklist == null) {
-      return circularIndicator(context);
-    } else if (groceryChecklist.length == 0) {
-      return emptyWidget(context);
-    } else {
-      return entriesList(context);
+  _onReorder(oldIndex, newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex = newIndex - 1;
+      }
+      final element = _values.removeAt(oldIndex);
+      _values.insert(newIndex, element);
+    });
+  }
+
+  Widget checkListItem(int key) {
+    return Row(
+      key: ValueKey(key),
+      children: [
+        Text('$key'),
+        SizedBox(width: 20.0),
+        Expanded(child: TextFormField(
+          onChanged: (val) {
+            _onUpdate(key, val);
+          },
+        )),
+        SizedBox(width: 5.0),
+        IconButton(
+            icon: Icon(
+              Icons.close,
+            ),
+            onPressed: () {
+              setState(() {
+                _values.removeAt(key);
+                _itemCount--;
+              });
+            }),
+      ],
+    );
+  }
+
+  _onUpdate(int key, String val) {
+    _removeRow(key);
+
+    Map<String, dynamic> json = {'id': key, 'value': val};
+    _values.add(json);
+    print('$_values');
+  }
+
+  _removeRow(int key) {
+    int foundKey = -1;
+    for (var map in _values) {
+      if (map.containsKey('id')) {
+        if (map['id'] == key) {
+          foundKey = key;
+          break;
+        }
+      }
     }
-  }
 
-  Widget emptyWidget(BuildContext context) {
-    return Center(
-        child: Icon(
-      Icons.book,
-      size: 100,
-    ));
-  }
-
-  Widget circularIndicator(BuildContext context) {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  Widget entriesList(BuildContext context) {
-    // TODO: Get checkboxes working
-    bool? hideTile = false;
-    return ListView.builder(
-        itemCount: groceryChecklist.length,
-        itemBuilder: (context, index) {
-          return CheckboxListTile(
-              title: Text('${groceryChecklist[index].item}'),
-              value: hideTile,
-              onChanged: (bool? value) => setState(() {
-                    hideTile = value;
-                  }));
-        });
-  }
-
-  void pushNewChecklistItem(BuildContext context) {
-    Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddChecklistItem()))
-        .then((data) => setState(() => {}));
+    if (foundKey != -1) {
+      _values.removeWhere((map) {
+        return map['id'] == foundKey;
+      });
+    }
   }
 }
