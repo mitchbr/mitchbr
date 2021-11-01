@@ -177,7 +177,6 @@ class Server {
         char buffer[13];
 
         for (int i = 0; i < 4; i++) {
-            // TODO: Somehow time this out if there are less than 4 ACKs
             readValue = read( client, buffer, 12 );
             cout << "ACK received: " << buffer << endl;
         }
