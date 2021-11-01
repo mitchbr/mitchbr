@@ -1,16 +1,13 @@
-# groceries
+# Grocery List
 
-A new Flutter project.
+An app used for storing recipes and creating checklists for the grocery store
 
-## Getting Started
+## Future Plans
+ - Keep checklist items after marked; move them to the bottom and draw line through them
+ - Make checklist items text fields on the listview screen, allowing the user to add/edit items without going to a new screen
+ - Add an 'instructions' field to recipes to allow the user to write out how to complete the recipe
+ - Add amounts for each item, allowing the user to remember how much of something they want (ie 2 apples)
+ - Allow the user to edit a recipe after it's been saved
+ - Use a Recipe API to let the user explore fun recipes published by others
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ - Bug Fix: Hitting the 'X' on a recipe item deletes the last item in the list, rather than the desired item
