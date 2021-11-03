@@ -33,7 +33,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.delete_rounded), // TODO: Make trash can icon
+              icon: Icon(Icons.delete_rounded),
               onPressed: () {
                 deleteRecipe(recipeEntry.recipe);
               },

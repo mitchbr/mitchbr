@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.oregonstate.brownmit.groceries">
    <application
-        android:label="groceries"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Grocery Tracker"
+        android:icon="@mipmap/grocery_tracker">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
