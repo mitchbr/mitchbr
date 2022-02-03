@@ -33,7 +33,8 @@ class _RecipeEntriesState extends State<RecipeEntries> {
     final entriesList = entries.map((record) {
       return RecipeEntry(
         recipe: record['recipe'],
-        items: json.decode(record['items']),
+        ingredients: json.decode(record['ingredients']),
+        instructions: record['instructions'],
       );
     }).toList();
     if (mounted) {

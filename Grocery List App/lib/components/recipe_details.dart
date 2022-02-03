@@ -22,7 +22,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
   void initState() {
     super.initState();
     checkedValues =
-        List.filled(recipeEntry.items.length, true, growable: false);
+        List.filled(recipeEntry.ingredients.length, true, growable: false);
   }
 
   @override
@@ -33,7 +33,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.delete_rounded), // TODO: Make trash can icon
+              icon: Icon(Icons.delete_rounded),
               onPressed: () {
                 deleteRecipe(recipeEntry.recipe);
               },
@@ -49,9 +49,21 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   Widget entriesList(BuildContext context) {
     return ListView.builder(
-        itemCount: recipeEntry.items.length,
+        itemCount: recipeEntry.ingredients.length + 1,
         itemBuilder: (context, index) {
-          return itemTile(index);
+          if (index == recipeEntry.ingredients.length) {
+            return Column(children: [
+              ListTile(title: Text('Instructions')),
+              ListTile(title: Text(recipeEntry.instructions))
+            ]);
+          } else if (index == 0) {
+            return Column(children: [
+              ListTile(title: Text('Ingredients')),
+              itemTile(index)
+            ]);
+          } else {
+            return itemTile(index);
+          }
         });
   }
 
@@ -59,7 +71,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return CheckboxListTile(
-        title: Text(recipeEntry.items[index]),
+        title: Text(recipeEntry.ingredients[index]),
         value: checkedValues[index],
         onChanged: (newValue) {
           setState(() {
@@ -82,12 +94,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
           await db.execute(sqlCreate);
         });
 
-        for (int i = 0; i < recipeEntry.items.length; i++) {
+        for (int i = 0; i < recipeEntry.ingredients.length; i++) {
           if (checkedValues[i]) {
             await db.transaction((txn) async {
               await txn.rawInsert(
                   'INSERT INTO grocery_checklist(item) VALUES(?)',
-                  [recipeEntry.items[i]]);
+                  [recipeEntry.ingredients[i]]);
             });
           }
         }
