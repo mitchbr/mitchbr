@@ -53,12 +53,22 @@ class _NewRecipeState extends State<NewRecipe> {
                 if (index == 0) {
                   return Column(children: [
                     showRecipe(),
-                    const ListTile(title: Text('Ingredients:')),
+                    const ListTile(
+                        title: Text(
+                      'Ingredients',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
                   ]);
                 } else if (index == entryData.ingredients.length + 1) {
                   return Column(children: [
                     newEntryBox(context),
-                    const ListTile(title: Text('Instructions')),
+                    const ListTile(
+                        title: Text(
+                      'Instructions',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
                     showInstructions(),
                     saveButton(context)
                   ]);
@@ -131,6 +141,7 @@ class _NewRecipeState extends State<NewRecipe> {
             autofocus: true,
             decoration: const InputDecoration(
                 labelText: 'Recipe Name', border: OutlineInputBorder()),
+            textCapitalization: TextCapitalization.words,
             onSaved: (value) {
               if (value != null) {
                 entryData.recipe = value;
@@ -200,6 +211,7 @@ class _NewRecipeState extends State<NewRecipe> {
       autofocus: true,
       decoration: const InputDecoration(
           labelText: 'New Ingredient', border: OutlineInputBorder()),
+      textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
           entryData.ingredients.add(value);
@@ -248,6 +260,9 @@ class _NewRecipeState extends State<NewRecipe> {
             autofocus: true,
             decoration: const InputDecoration(
                 labelText: 'Instructions', border: OutlineInputBorder()),
+            textCapitalization: TextCapitalization.sentences,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
             onSaved: (value) {
               if (value != null) {
                 entryData.instructions = value;

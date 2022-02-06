@@ -117,6 +117,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
       autofocus: true,
       decoration: const InputDecoration(
           labelText: 'New Item', border: const OutlineInputBorder()),
+      textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
           entryData.item = value;
