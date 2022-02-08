@@ -33,7 +33,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         actions: [
           Builder(
             builder: (context) => IconButton(
-              icon: Icon(Icons.delete_rounded),
+              icon: const Icon(Icons.delete_rounded),
               onPressed: () {
                 deleteRecipe(recipeEntry.recipe);
               },
@@ -53,17 +53,20 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         itemBuilder: (context, index) {
           if (index == recipeEntry.ingredients.length) {
             return Column(children: [
-              ListTile(
+              const ListTile(
                   title: Text(
                 'Instructions',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               )),
               ListTile(title: Text(recipeEntry.instructions)),
-              ListTile(title: Spacer(flex: 2))
+              const ListTile(
+                  title: SizedBox(
+                height: 20,
+              ))
             ]);
           } else if (index == 0) {
             return Column(children: [
-              ListTile(
+              const ListTile(
                   title: Text(
                 'Ingredients',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

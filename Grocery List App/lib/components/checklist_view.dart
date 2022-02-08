@@ -17,7 +17,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
 
   final formKey = GlobalKey<FormState>();
   var entryData = GroceryEntry(item: '');
-  final TextEditingController _entryController = new TextEditingController();
+  final TextEditingController _entryController = TextEditingController();
 
   void loadSqlStartup() async {
     sqlCreate = await rootBundle.loadString('assets/grocery.txt');
@@ -60,7 +60,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
   }
 
   Widget circularIndicator(BuildContext context) {
-    return const Center(child: const CircularProgressIndicator());
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget entriesList(BuildContext context) {
@@ -70,7 +70,13 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
             itemCount: checklistEntries.length + 1,
             itemBuilder: (context, index) {
               if (index == checklistEntries.length) {
-                return newEntryBox(context);
+                return Column(children: [
+                  newEntryBox(context),
+                  const ListTile(
+                      title: SizedBox(
+                    height: 20,
+                  ))
+                ]);
               } else {
                 return groceryTile(index);
               }
@@ -86,6 +92,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
   }
 
   void delete(String title) async {
+    // TODO: Use delete without removing both duplicates
     prevDeleted = title;
     loadSqlStartup();
     var db = await openDatabase('grocery.db', version: 1,
@@ -116,7 +123,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
       controller: _entryController,
       autofocus: true,
       decoration: const InputDecoration(
-          labelText: 'New Item', border: const OutlineInputBorder()),
+          labelText: 'New Item', border: OutlineInputBorder()),
       textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
@@ -156,6 +163,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
 
         setState(() {
           _entryController.clear();
+          prevDeleted = null;
         });
       }
     }
