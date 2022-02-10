@@ -19,6 +19,12 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
   var entryData = GroceryEntry(item: '');
   final TextEditingController _entryController = TextEditingController();
 
+  /*
+   *
+   * Load SQL data
+   *
+   */
+
   void loadSqlStartup() async {
     sqlCreate = await rootBundle.loadString('assets/grocery.txt');
   }
@@ -42,6 +48,11 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
     }
   }
 
+  /*
+   *
+   * Page Entry Point
+   * 
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +74,11 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
     return const Center(child: CircularProgressIndicator());
   }
 
+  /*
+   *
+   * Entry List Widgets
+   * 
+   */
   Widget entriesList(BuildContext context) {
     return ReorderableListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -101,6 +117,11 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
             icon: const Icon(Icons.check)));
   }
 
+  /*
+   *
+   * Delete Entries
+   * 
+   */
   void delete(String title) async {
     // TODO: Use delete without removing both duplicates
     prevDeleted = title;
@@ -118,6 +139,11 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
     setState(() {});
   }
 
+  /*
+   *
+   * Add New Entries
+   * 
+   */
   Widget newEntryBox(BuildContext context) {
     return Form(
         key: formKey,
@@ -179,6 +205,11 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
     }
   }
 
+  /*
+   *
+   * Undo
+   * 
+   */
   Widget undoButton() {
     return Visibility(
         visible: (prevDeleted != null),

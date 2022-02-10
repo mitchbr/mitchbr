@@ -19,6 +19,11 @@ class _RecipeEntriesState extends State<RecipeEntries> {
   var checklistEntries;
   var sqlCreate;
 
+  /*
+   *
+   * Load SQL Data
+   * 
+   */
   void loadSqlStartup() async {
     sqlCreate = await rootBundle.loadString('assets/recipes.txt');
   }
@@ -44,6 +49,11 @@ class _RecipeEntriesState extends State<RecipeEntries> {
     }
   }
 
+  /*
+   *
+   * Page Entry Point
+   * 
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +62,11 @@ class _RecipeEntriesState extends State<RecipeEntries> {
             onPressed: () => pushNewEntry(context), child: Icon(Icons.add)));
   }
 
+  /*
+   *
+   * Page Views
+   * 
+   */
   Widget bodyBuilder(BuildContext context) {
     loadEntries();
     if (checklistEntries == null) {
@@ -75,6 +90,11 @@ class _RecipeEntriesState extends State<RecipeEntries> {
     return Center(child: CircularProgressIndicator());
   }
 
+  /*
+   *
+   * Recipes ListView
+   * 
+   */
   Widget entriesList(BuildContext context) {
     return ListView.builder(
         itemCount: checklistEntries.length,
@@ -83,17 +103,22 @@ class _RecipeEntriesState extends State<RecipeEntries> {
         });
   }
 
-  void pushNewEntry(BuildContext context) {
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewRecipe()))
-        .then((data) => setState(() => {}));
-  }
-
   Widget groceryTile(int index) {
     return ListTile(
       title: Text('${checklistEntries[index].recipe}'),
       onTap: () => pushRecipeDetails(context, checklistEntries[index]),
     );
+  }
+
+  /*
+   *
+   * Paths for Different Pages
+   * 
+   */
+  void pushNewEntry(BuildContext context) {
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewRecipe()))
+        .then((data) => setState(() => {}));
   }
 
   void pushRecipeDetails(BuildContext context, recipeEntry) {

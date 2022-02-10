@@ -25,6 +25,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         List.filled(recipeEntry.ingredients.length, true, growable: false);
   }
 
+  /*
+   *
+   * Page Entry Point
+   * 
+   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +52,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     );
   }
 
+  /*
+   *
+   * Recipe Detail ListView
+   * 
+   */
   Widget entriesList(BuildContext context) {
     return ListView.builder(
         itemCount: recipeEntry.ingredients.length + 1,
@@ -96,6 +106,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     });
   }
 
+  /*
+   *
+   * SQL Interactions
+   * 
+   */
   Widget addToGroceryList(BuildContext context) {
     return TextButton(
       child: const Text('Save to Grocery List'),

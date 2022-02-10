@@ -29,7 +29,7 @@ class _NewRecipeState extends State<NewRecipe> {
 
   /*
    *
-   * Page Layout
+   * Page Entry Point
    * 
    */
   @override
