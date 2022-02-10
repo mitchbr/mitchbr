@@ -39,8 +39,17 @@ class _RecipeDetailsState extends State<RecipeDetails> {
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.delete_rounded),
+              onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      verifyDeleteRecipe(context, recipeEntry.recipe)),
+            ),
+          ),
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.edit),
               onPressed: () {
-                deleteRecipe(recipeEntry.recipe);
+                // TODO: Add edit feature
               },
             ),
           ),
@@ -135,6 +144,26 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         Navigator.of(context).pop();
       },
     );
+  }
+
+  // TODO: Add popup verification widget
+  Widget verifyDeleteRecipe(BuildContext context, String title) {
+    return AlertDialog(
+        title: const Text('Delete Recipe?'),
+        content: const Text('This will permenently remove the recipe'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              deleteRecipe(title);
+            },
+            child: const Text('Yes'),
+          ),
+        ]);
   }
 
   void deleteRecipe(String title) async {
