@@ -64,27 +64,37 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
   }
 
   Widget entriesList(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(20),
-        child: ListView.builder(
-            itemCount: checklistEntries.length + 1,
-            itemBuilder: (context, index) {
-              if (index == checklistEntries.length) {
-                return Column(children: [
-                  newEntryBox(context),
-                  const ListTile(
-                      title: SizedBox(
-                    height: 20,
-                  ))
-                ]);
-              } else {
-                return groceryTile(index);
-              }
-            }));
+    return ReorderableListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: checklistEntries.length + 1,
+        itemBuilder: (context, index) {
+          if (index == checklistEntries.length) {
+            return Column(key: Key('$index'), children: [
+              newEntryBox(context),
+              const ListTile(
+                  title: SizedBox(
+                height: 20,
+              ))
+            ]);
+          } else {
+            return groceryTile(index);
+          }
+        },
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            final item = checklistEntries.removeAt(oldIndex);
+            checklistEntries.insert(newIndex, item);
+            print('$oldIndex, $newIndex');
+          });
+        });
   }
 
   Widget groceryTile(int index) {
     return ListTile(
+        key: Key('$index'),
         title: Text('${checklistEntries[index].item}'),
         leading: IconButton(
             onPressed: () => delete(checklistEntries[index].item),
