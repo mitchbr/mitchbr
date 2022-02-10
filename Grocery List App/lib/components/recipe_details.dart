@@ -38,19 +38,19 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         actions: [
           Builder(
             builder: (context) => IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                // TODO: Add edit feature
+              },
+            ),
+          ),
+          Builder(
+            builder: (context) => IconButton(
               icon: const Icon(Icons.delete_rounded),
               onPressed: () => showDialog<String>(
                   context: context,
                   builder: (BuildContext context) =>
                       verifyDeleteRecipe(context, recipeEntry.recipe)),
-            ),
-          ),
-          Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () {
-                // TODO: Add edit feature
-              },
             ),
           ),
         ],
@@ -117,7 +117,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   /*
    *
-   * SQL Interactions
+   * Add to SQL
    * 
    */
   Widget addToGroceryList(BuildContext context) {
@@ -146,7 +146,11 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     );
   }
 
-  // TODO: Add popup verification widget
+  /*
+   *
+   * Delete Recipe
+   * 
+   */
   Widget verifyDeleteRecipe(BuildContext context, String title) {
     return AlertDialog(
         title: const Text('Delete Recipe?'),

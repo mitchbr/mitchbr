@@ -231,7 +231,18 @@ class _NewRecipeState extends State<NewRecipe> {
   }
 
   Widget ingredientTile(int index) {
-    return ListTile(title: Text('${entryData.ingredients[index]}'));
+    return ListTile(
+      title: Text('${entryData.ingredients[index]}'),
+      trailing: IconButton(
+          onPressed: (() => removeIngredient(index)),
+          icon: const Icon(Icons.close)),
+    );
+  }
+
+  void removeIngredient(int index) {
+    setState(() {
+      entryData.ingredients.removeAt(index);
+    });
   }
 
   /*
