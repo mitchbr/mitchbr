@@ -24,6 +24,9 @@ class _NewRecipeState extends State<NewRecipe> {
   final instructionsKey = GlobalKey<FormState>();
   var entryData = RecipeEntry(recipe: '', ingredients: [], instructions: '');
   final TextEditingController _entryController = new TextEditingController();
+  final TextEditingController _recipeNameControl = new TextEditingController();
+  final TextEditingController _instructionsControl =
+      new TextEditingController();
   var savedRecipe = false;
   var savedInstructions = false;
 
@@ -84,7 +87,7 @@ class _NewRecipeState extends State<NewRecipe> {
         onPressed: () async {
           var currState = formKey.currentState;
           if (currState != null) {
-            if (currState.validate()) {
+            if (currState.validate() && savedRecipe && savedInstructions) {
               currState.save();
               var sqlCreate = await rootBundle.loadString('assets/recipes.txt');
               var db = await openDatabase(
@@ -130,7 +133,14 @@ class _NewRecipeState extends State<NewRecipe> {
   }
 
   Widget recipeTile() {
-    return ListTile(title: Text(entryData.recipe));
+    return ListTile(
+        title: Text(entryData.recipe),
+        trailing: IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () => setState(() {
+            savedRecipe = false;
+          }),
+        ));
   }
 
   Widget recipeTextField() {
@@ -139,6 +149,7 @@ class _NewRecipeState extends State<NewRecipe> {
         child: ListTile(
           title: TextFormField(
             autofocus: true,
+            controller: _recipeNameControl,
             decoration: const InputDecoration(
                 labelText: 'Recipe Name', border: OutlineInputBorder()),
             textCapitalization: TextCapitalization.words,
@@ -260,7 +271,14 @@ class _NewRecipeState extends State<NewRecipe> {
   }
 
   Widget instructionsTile() {
-    return ListTile(title: Text(entryData.instructions));
+    return ListTile(
+        title: Text(entryData.instructions),
+        trailing: IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () => setState(() {
+            savedInstructions = false;
+          }),
+        ));
   }
 
   Widget instructionsTextField() {
@@ -269,6 +287,7 @@ class _NewRecipeState extends State<NewRecipe> {
         child: ListTile(
           title: TextFormField(
             autofocus: true,
+            controller: _instructionsControl,
             decoration: const InputDecoration(
                 labelText: 'Instructions', border: OutlineInputBorder()),
             textCapitalization: TextCapitalization.sentences,
