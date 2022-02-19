@@ -79,6 +79,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
    * Entry List Widgets
    * 
    */
+  //TODO: Get ReorderableListView working
   Widget entriesList(BuildContext context) {
     return ReorderableListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20),

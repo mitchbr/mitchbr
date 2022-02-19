@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:groceries/components/edit_recipe.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'recipe_entry.dart';
+import 'edit_recipe.dart';
 
 class RecipeDetails extends StatefulWidget {
   final RecipeEntry recipeEntry;
@@ -39,9 +41,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
           Builder(
             builder: (context) => IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {
-                // TODO: Add edit feature
-              },
+              onPressed: () => pushEditEntry(context),
             ),
           ),
           Builder(
@@ -59,6 +59,14 @@ class _RecipeDetailsState extends State<RecipeDetails> {
       floatingActionButton: addToGroceryList(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+
+  void pushEditEntry(BuildContext context) {
+    Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditRecipe(entryData: recipeEntry)))
+        .then((data) => setState(() => {}));
   }
 
   /*

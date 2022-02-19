@@ -4,15 +4,17 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
 
 import 'recipe_entry.dart';
+import 'new_recipe.dart';
 
-class NewRecipe extends StatefulWidget {
-  const NewRecipe({Key? key}) : super(key: key);
+class EditRecipe extends StatefulWidget {
+  final RecipeEntry entryData;
+  const EditRecipe({Key? key, required this.entryData}) : super(key: key);
 
   @override
-  _NewRecipeState createState() => _NewRecipeState();
+  _EditRecipeState createState() => _EditRecipeState();
 }
 
-class _NewRecipeState extends State<NewRecipe> {
+class _EditRecipeState extends State<EditRecipe> {
   /*
    *
    * Variable Declaration
@@ -22,13 +24,20 @@ class _NewRecipeState extends State<NewRecipe> {
   final recipeKey = GlobalKey<FormState>();
   final ingredientKey = GlobalKey<FormState>();
   final instructionsKey = GlobalKey<FormState>();
-
-  var entryData = RecipeEntry(recipe: '', ingredients: [], instructions: '');
   final TextEditingController _entryController = TextEditingController();
   final TextEditingController _recipeNameControl = TextEditingController();
   final TextEditingController _instructionsControl = TextEditingController();
-  var savedRecipe = false;
-  var savedInstructions = false;
+  var savedRecipe = true;
+  var savedInstructions = true;
+  var oldTitle;
+
+  @override
+  void initState() {
+    _recipeNameControl.text = widget.entryData.recipe;
+    _instructionsControl.text = widget.entryData.instructions;
+    oldTitle = widget.entryData.recipe;
+    super.initState();
+  }
 
   /*
    *
@@ -39,7 +48,7 @@ class _NewRecipeState extends State<NewRecipe> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Recipe"),
+        title: const Text("Edit Recipe"),
       ),
       body: formContent(context),
     );
@@ -51,7 +60,7 @@ class _NewRecipeState extends State<NewRecipe> {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: ListView.builder(
-              itemCount: entryData.ingredients.length + 2,
+              itemCount: widget.entryData.ingredients.length + 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
                   return Column(children: [
@@ -63,7 +72,7 @@ class _NewRecipeState extends State<NewRecipe> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     )),
                   ]);
-                } else if (index == entryData.ingredients.length + 1) {
+                } else if (index == widget.entryData.ingredients.length + 1) {
                   return Column(children: [
                     newEntryBox(context),
                     const ListTile(
@@ -82,7 +91,7 @@ class _NewRecipeState extends State<NewRecipe> {
         ));
   }
 
-// TODO: Let user know when name or instructions aren't valid.
+  // TODO: Let user know when name or instructions aren't valid.
   Widget saveButton(BuildContext context) {
     return TextButton(
         onPressed: () async {
@@ -99,14 +108,20 @@ class _NewRecipeState extends State<NewRecipe> {
                 },
               );
 
+              //TODO: change from DELETE/INSERT to UDPATE
+              await db.transaction((txn) async {
+                await txn.rawDelete(
+                    'DELETE FROM recipes_list WHERE recipe = ?', [oldTitle]);
+              });
+
               await db.transaction(
                 (txn) async {
                   await txn.rawInsert(
                       'INSERT INTO recipes_list(recipe, ingredients, instructions) VALUES(?, ?, ?)',
                       [
-                        entryData.recipe,
-                        json.encode(entryData.ingredients),
-                        entryData.instructions
+                        widget.entryData.recipe,
+                        json.encode(widget.entryData.ingredients),
+                        widget.entryData.instructions
                       ]);
                 },
               );
@@ -135,7 +150,7 @@ class _NewRecipeState extends State<NewRecipe> {
 
   Widget recipeTile() {
     return ListTile(
-        title: Text(entryData.recipe),
+        title: Text(widget.entryData.recipe),
         trailing: IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () => setState(() {
@@ -156,7 +171,7 @@ class _NewRecipeState extends State<NewRecipe> {
             textCapitalization: TextCapitalization.words,
             onSaved: (value) {
               if (value != null) {
-                entryData.recipe = value;
+                widget.entryData.recipe = value;
               }
             },
             validator: (value) {
@@ -226,7 +241,7 @@ class _NewRecipeState extends State<NewRecipe> {
       textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
-          entryData.ingredients.add(value);
+          widget.entryData.ingredients.add(value);
         }
       },
       validator: (value) {
@@ -244,7 +259,7 @@ class _NewRecipeState extends State<NewRecipe> {
 
   Widget ingredientTile(int index) {
     return ListTile(
-      title: Text('${entryData.ingredients[index]}'),
+      title: Text('${widget.entryData.ingredients[index]}'),
       trailing: IconButton(
           onPressed: (() => removeIngredient(index)),
           icon: const Icon(Icons.close)),
@@ -253,7 +268,7 @@ class _NewRecipeState extends State<NewRecipe> {
 
   void removeIngredient(int index) {
     setState(() {
-      entryData.ingredients.removeAt(index);
+      widget.entryData.ingredients.removeAt(index);
     });
   }
 
@@ -273,7 +288,7 @@ class _NewRecipeState extends State<NewRecipe> {
 
   Widget instructionsTile() {
     return ListTile(
-        title: Text(entryData.instructions),
+        title: Text(widget.entryData.instructions),
         trailing: IconButton(
           icon: const Icon(Icons.edit),
           onPressed: () => setState(() {
@@ -296,7 +311,7 @@ class _NewRecipeState extends State<NewRecipe> {
             maxLines: null,
             onSaved: (value) {
               if (value != null) {
-                entryData.instructions = value;
+                widget.entryData.instructions = value;
               }
             },
             validator: (value) {
