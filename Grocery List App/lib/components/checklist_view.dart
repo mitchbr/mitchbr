@@ -82,7 +82,7 @@ class _ChecklistEntriesState extends State<ChecklistEntries> {
   //TODO: Get ReorderableListView working
   Widget entriesList(BuildContext context) {
     return ReorderableListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         itemCount: checklistEntries.length + 1,
         itemBuilder: (context, index) {
           if (index == checklistEntries.length) {

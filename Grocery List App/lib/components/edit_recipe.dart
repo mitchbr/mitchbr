@@ -128,6 +128,8 @@ class _EditRecipeState extends State<EditRecipe> {
 
               await db.close();
 
+              //TODO: Pop to edited recipe
+              Navigator.of(context).pop();
               Navigator.of(context).pop();
             }
           }
