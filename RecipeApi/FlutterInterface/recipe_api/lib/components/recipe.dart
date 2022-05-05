@@ -18,4 +18,16 @@ class Recipe {
     required this.ingredients,
     required this.images,
   });
+
+  factory Recipe.fromJson(Map<String, dynamic> json) {
+    return Recipe(
+        recipeId: json["RecipeId"],
+        recipeName: json["RecipeName"],
+        instructions: json["instructions"],
+        author: json["author"],
+        publishDate: json["publishDate"],
+        category: json["category"],
+        ingredients: [], //TODO: Implement
+        images: []); //TODO: Implement
+  }
 }

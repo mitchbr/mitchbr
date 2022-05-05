@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'components/recipes_view.dart';
+
 class Groceries extends StatefulWidget {
   const Groceries({Key? key}) : super(key: key);
 
@@ -23,9 +25,9 @@ class _GroceriesState extends State<Groceries> {
   Widget groceriesScaffold(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recipe Api"),
+        title: const Text("Recipe Api"),
       ),
-      body: Text("Hi"),
+      body: const RecipesView(),
     );
   }
 }
