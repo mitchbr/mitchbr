@@ -1,9 +1,11 @@
+import 'package:intl/intl.dart';
+
 class Recipe {
   final int recipeId;
   final String recipeName;
   final String instructions;
   final String author;
-  final String publishDate; // TODO: Fix date format
+  final DateTime publishDate;
   final String category;
   final List ingredients;
   final List images;
@@ -20,14 +22,15 @@ class Recipe {
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
+    DateFormat dateFormat = DateFormat("MM-dd-yyyy");
     return Recipe(
         recipeId: json["recipeId"],
         recipeName: json["recipeName"],
         instructions: json["instructions"],
         author: json["author"],
-        publishDate: json["publishDate"],
+        publishDate: dateFormat.parse(json["publishDate"]),
         category: json["category"],
-        ingredients: json["ingredients"], //TODO: Implement
-        images: []); //TODO: Implement
+        ingredients: json["ingredients"],
+        images: []); //TODO: Implement Images
   }
 }

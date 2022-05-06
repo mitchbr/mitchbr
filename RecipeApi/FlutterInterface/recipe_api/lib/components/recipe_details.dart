@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -53,7 +53,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   void pushEditEntry(BuildContext context) {
     var x = 3;
-    // TODO: Implement
+    // TODO: Implement Edit feature
     /*Navigator.push(
             context,
             MaterialPageRoute(
@@ -88,6 +88,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
   }
 
   Widget recipeMetaData(recipeDetails) {
+    DateFormat dateFormat = DateFormat("MMMM d, yyyy");
     return Column(children: [
       const ListTile(
           title: Text(
@@ -96,7 +97,9 @@ class _RecipeDetailsState extends State<RecipeDetails> {
       )),
       ListTile(title: Text(recipeEntry.instructions)),
       ListTile(title: Text('Author: ${recipeEntry.author}')),
-      ListTile(title: Text('Date Published: ${recipeEntry.publishDate}')),
+      ListTile(
+          title: Text(
+              'Date Published: ${dateFormat.format(recipeEntry.publishDate)}')),
       ListTile(title: Text('Category: ${recipeEntry.category}')),
       const ListTile(
           title: SizedBox(
@@ -109,7 +112,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
     var curIngredient = recipeEntry.ingredients[index];
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-      // TODO: Remove checkbox
+      // TODO: Remove checkbox?
       return CheckboxListTile(
         title: Text('${curIngredient["ingredientName"]} '
             '(${curIngredient["ingredientAmount"]} '
