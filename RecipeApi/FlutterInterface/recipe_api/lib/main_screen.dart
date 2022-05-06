@@ -16,7 +16,7 @@ class _GroceriesState extends State<Groceries> {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Recipes',
-        theme: ThemeData(colorScheme: ColorScheme.dark()),
+        theme: ThemeData(colorScheme: const ColorScheme.dark()),
         home: DefaultTabController(
             length: 2,
             child: Builder(builder: (context) => groceriesScaffold(context))));

@@ -3,7 +3,7 @@ class Recipe {
   final String recipeName;
   final String instructions;
   final String author;
-  final DateTime publishDate;
+  final String publishDate; // TODO: Fix date format
   final String category;
   final List ingredients;
   final List images;
@@ -21,13 +21,13 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-        recipeId: json["RecipeId"],
-        recipeName: json["RecipeName"],
+        recipeId: json["recipeId"],
+        recipeName: json["recipeName"],
         instructions: json["instructions"],
         author: json["author"],
         publishDate: json["publishDate"],
         category: json["category"],
-        ingredients: [], //TODO: Implement
+        ingredients: json["ingredients"], //TODO: Implement
         images: []); //TODO: Implement
   }
 }
