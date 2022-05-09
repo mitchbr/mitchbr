@@ -1,16 +1,16 @@
 import 'package:intl/intl.dart';
 
 class Recipe {
-  final int recipeId;
-  final String recipeName;
-  final String instructions;
-  final String author;
-  final DateTime publishDate;
-  final String category;
-  final List ingredients;
-  final List images;
+  late int recipeId;
+  late String recipeName;
+  late String instructions;
+  late String author;
+  late DateTime publishDate;
+  late String category;
+  late List ingredients;
+  late List images;
 
-  const Recipe({
+  Recipe({
     required this.recipeId,
     required this.recipeName,
     required this.instructions,
@@ -32,5 +32,19 @@ class Recipe {
         category: json["category"],
         ingredients: json["ingredients"],
         images: []); //TODO: Implement Images
+  }
+
+  Map<String, dynamic> toJson() {
+    DateFormat dateFormat = DateFormat("MM-dd-yyyy");
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data["recipeId"] = recipeId;
+    data["recipeName"] = recipeName;
+    data["instructions"] = instructions;
+    data["author"] = author;
+    data["publishDate"] = dateFormat.format(publishDate);
+    data["category"] = category;
+    data["ingredients"] = ingredients;
+    data["images"] = ['FAKE URL']; //TODO: Implement Images
+    return data;
   }
 }

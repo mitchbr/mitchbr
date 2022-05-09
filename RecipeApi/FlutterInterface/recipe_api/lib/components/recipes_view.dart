@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'recipe.dart';
 import 'recipe_details.dart';
+import 'new_recipe.dart';
 
 class RecipesView extends StatefulWidget {
   const RecipesView({Key? key}) : super(key: key);
@@ -18,7 +19,11 @@ class _RecipesViewState extends State<RecipesView> {
 
   @override
   Widget build(BuildContext context) {
-    return bodyBuilder(context);
+    return Scaffold(
+        body: bodyBuilder(context),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => pushNewEntry(context),
+            child: const Icon(Icons.add)));
   }
 
   void fetchRecipes() async {
@@ -87,6 +92,17 @@ class _RecipesViewState extends State<RecipesView> {
       title: Text('${recipeEntries[index].recipeName}'),
       onTap: () => pushRecipeDetails(context, recipeEntries[index]),
     );
+  }
+
+  /*
+   *
+   * Paths for Different Pages
+   * 
+   */
+  void pushNewEntry(BuildContext context) {
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewRecipe()))
+        .then((data) => setState(() => {}));
   }
 
   void pushRecipeDetails(BuildContext context, recipeEntry) {
