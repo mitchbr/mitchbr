@@ -4,7 +4,8 @@ import 'dart:convert';
 
 import 'recipe.dart';
 import 'recipe_details.dart';
-import 'new_recipe.dart';
+import 'package:recipe_api/components/new_recipe_components/new_recipe_metadata.dart';
+import 'package:recipe_api/components/new_recipe_components/new_recipe_ingredients.dart';
 
 class RecipesView extends StatefulWidget {
   const RecipesView({Key? key}) : super(key: key);
@@ -21,21 +22,18 @@ class _RecipesViewState extends State<RecipesView> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: bodyBuilder(context),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => pushNewEntry(context),
-            child: const Icon(Icons.add)));
+        floatingActionButton:
+            FloatingActionButton(onPressed: () => pushNewEntry(context), child: const Icon(Icons.add)));
   }
 
   void fetchRecipes() async {
     final res = await http.get(
-      Uri.parse(
-          'https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/getRecipes'),
+      Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/getRecipes'),
     );
 
     if (res.statusCode == 200) {
       final entriesJson = jsonDecode(res.body)["recipes"];
-      final entriesList =
-          entriesJson.map((recipe) => Recipe.fromJson(recipe)).toList();
+      final entriesList = entriesJson.map((recipe) => Recipe.fromJson(recipe)).toList();
 
       setState(() {
         loadedSql = true;
@@ -100,16 +98,12 @@ class _RecipesViewState extends State<RecipesView> {
    * 
    */
   void pushNewEntry(BuildContext context) {
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewRecipe()))
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRecipeMetadata()))
         .then((data) => setState(() => {}));
   }
 
   void pushRecipeDetails(BuildContext context, recipeEntry) {
-    Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => RecipeDetails(recipeEntry: recipeEntry)))
+    Navigator.push(context, MaterialPageRoute(builder: (context) => RecipeDetails(recipeEntry: recipeEntry)))
         .then((data) => setState(() => {}));
   }
 }
