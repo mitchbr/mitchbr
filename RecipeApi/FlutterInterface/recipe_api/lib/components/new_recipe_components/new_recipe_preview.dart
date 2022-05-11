@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../recipe.dart';
 
@@ -77,10 +79,15 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
     return Column(children: [
       const ListTile(
           title: Text(
-        'Details',
+        'Instructions',
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       )),
       ListTile(title: Text(entryData.instructions)),
+      const ListTile(
+          title: Text(
+        'Details',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      )),
       ListTile(title: Text('Author: ${entryData.author}')),
       ListTile(title: Text('Category: ${entryData.category}')),
       const ListTile(
@@ -106,7 +113,12 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
   Widget publishButton(BuildContext context) {
     return TextButton(
         onPressed: () async {
-          // TODO: Publish data to API
+          final postBody = entryData.toJson();
+          await http.post(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/createRecipe'),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(postBody));
 
           Navigator.of(context).pop();
           Navigator.of(context).pop();

@@ -23,8 +23,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
   void initState() {
     super.initState();
     recipeEntry = widget.recipeEntry;
-    checkedValues =
-        List.filled(recipeEntry.ingredients.length, true, growable: false);
+    checkedValues = List.filled(recipeEntry.ingredients.length, true, growable: false);
   }
 
   /*
@@ -41,9 +40,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
           builder: (context) => IconButton(
             icon: const Icon(Icons.delete_rounded),
             onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) =>
-                    verifyDeleteRecipe(context, recipeEntry.recipeId)),
+                context: context, builder: (BuildContext context) => verifyDeleteRecipe(context, recipeEntry.recipeId)),
           ),
         ),
       ]),
@@ -96,10 +93,13 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       )),
       ListTile(title: Text(recipeEntry.instructions)),
-      ListTile(title: Text('Author: ${recipeEntry.author}')),
-      ListTile(
+      const ListTile(
           title: Text(
-              'Date Published: ${dateFormat.format(recipeEntry.publishDate)}')),
+        'Details',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      )),
+      ListTile(title: Text('Author: ${recipeEntry.author}')),
+      ListTile(title: Text('Date Published: ${dateFormat.format(recipeEntry.publishDate)}')),
       ListTile(title: Text('Category: ${recipeEntry.category}')),
       const ListTile(
           title: SizedBox(
@@ -110,8 +110,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   Widget itemTile(int index) {
     var curIngredient = recipeEntry.ingredients[index];
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
+    return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
       // TODO: Remove checkbox?
       return CheckboxListTile(
         title: Text('${curIngredient["ingredientName"]} '
@@ -155,13 +154,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   void deleteRecipe(id) async {
     // TODO: Verify response code
-    final http.Response response = await http.delete(
-        Uri.parse(
-            'https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/deleteRecipe'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode({'recipeId': id}));
+    final http.Response response =
+        await http.delete(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/deleteRecipe'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode({'recipeId': id}));
 
     setState(() {
       Navigator.of(context).pop();
