@@ -39,6 +39,11 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
     );
   }
 
+  /*
+   *
+   * Ingredient Form layout
+   * 
+   */
   Widget formContent(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(20),
@@ -59,6 +64,11 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
             }));
   }
 
+  /*
+   *
+   * New ingredient forms
+   * 
+   */
   Widget newEntryBox() {
     return Form(
         key: formKey,
@@ -162,6 +172,11 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
     }
   }
 
+  /*
+   *
+   * Ingredient display tile
+   * 
+   */
   Widget ingredientTile(int index) {
     return ListTile(
       title: Text('${formIngredients[index]['ingredientName']} '
@@ -177,6 +192,11 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
     });
   }
 
+  /*
+   *
+   * Push next page
+   * 
+   */
   Widget nextButton(BuildContext context) {
     return TextButton(
         onPressed: () async {

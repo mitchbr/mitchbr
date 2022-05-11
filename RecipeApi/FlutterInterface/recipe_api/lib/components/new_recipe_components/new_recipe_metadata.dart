@@ -38,6 +38,11 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
     super.initState();
   }
 
+  /*
+   *
+   * Load category data
+   * 
+   */
   void loadFromJson() async {
     final String response = await rootBundle.loadString('assets/recipe_categories.json');
     final data = await json.decode(response);
@@ -60,6 +65,11 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
     );
   }
 
+  /*
+   *
+   * Metadata Form layout
+   * 
+   */
   Widget formContent(BuildContext context) {
     return Form(
         key: formKey,
@@ -107,6 +117,11 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
     ));
   }
 
+  /*
+   *
+   * Form Fields
+   * 
+   */
   Widget recipeNameTextField() {
     return TextFormField(
       autofocus: true,
@@ -192,6 +207,11 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
     );
   }
 
+  /*
+   *
+   * Push next page
+   * 
+   */
   Widget nextButton(BuildContext context) {
     return TextButton(
         onPressed: () async {
@@ -199,8 +219,6 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
           if (currState != null) {
             if (currState.validate()) {
               currState.save();
-
-              // TODO: parse data to new_recipe_ingredients
 
               pushNewRecipeIngredients(context);
             }
