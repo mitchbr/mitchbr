@@ -44,6 +44,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
     setState(() {
       _categories = data["categories"].cast<String>();
       _category = data["categories"][0];
+      entryData.category = _category;
     });
   }
 
@@ -136,6 +137,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
       onChanged: (String? value) {
         setState(() {
           _category = value!;
+          entryData.category = _category;
         });
       },
       value: _category,
@@ -150,7 +152,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
       textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
-          entryData.recipeName = value;
+          entryData.instructions = value;
         }
       },
       validator: (value) {
@@ -174,7 +176,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
       textCapitalization: TextCapitalization.words,
       onSaved: (value) {
         if (value != null) {
-          entryData.recipeName = value;
+          entryData.author = value;
         }
       },
       validator: (value) {
