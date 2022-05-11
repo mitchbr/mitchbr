@@ -208,7 +208,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
   }
 
   void pushNewRecipeIngredients(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRecipeIngredients()))
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewRecipeIngredients(recipeMetadata: entryData)))
         .then((data) => setState(() => {}));
   }
 }

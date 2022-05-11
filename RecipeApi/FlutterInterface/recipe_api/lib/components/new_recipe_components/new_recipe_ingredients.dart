@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../recipe.dart';
+import 'package:recipe_api/components/new_recipe_components/new_recipe_preview.dart';
 
 class NewRecipeIngredients extends StatefulWidget {
-  const NewRecipeIngredients({Key? key}) : super(key: key);
+  final Recipe recipeMetadata;
+  const NewRecipeIngredients({Key? key, required this.recipeMetadata}) : super(key: key);
 
   @override
   State<NewRecipeIngredients> createState() => _NewRecipeIngredientsState();
@@ -17,16 +19,13 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _unitController = TextEditingController();
 
-  var entryData = Recipe(
-    recipeId: 0,
-    recipeName: '',
-    instructions: '',
-    author: '',
-    publishDate: DateTime.now(),
-    category: '',
-    ingredients: [],
-    images: [],
-  );
+  late Recipe entryData;
+
+  @override
+  void initState() {
+    entryData = widget.recipeMetadata;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,15 +180,14 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
   Widget nextButton(BuildContext context) {
     return TextButton(
         onPressed: () async {
-          // TODO: parse data to new_recipe_preview
-
+          entryData.ingredients = formIngredients;
           pushNewRecipePreview(context);
         },
         child: const Text('Next'));
   }
 
   void pushNewRecipePreview(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRecipeIngredients()))
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewRecipePreview(recipeMetadata: entryData)))
         .then((data) => setState(() => {}));
   }
 }
