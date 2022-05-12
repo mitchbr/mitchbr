@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 import 'recipe.dart';
+import 'edit_recipe.dart';
 
 class RecipeDetails extends StatefulWidget {
   final Recipe recipeEntry;
@@ -35,7 +36,12 @@ class _RecipeDetailsState extends State<RecipeDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(recipeEntry.recipeName), actions: [
-        // TODO: Add Edit action
+        Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => pushEditEntry(context),
+          ),
+        ),
         Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.delete_rounded),
@@ -46,16 +52,6 @@ class _RecipeDetailsState extends State<RecipeDetails> {
       ]),
       body: entriesList(context),
     );
-  }
-
-  void pushEditEntry(BuildContext context) {
-    var x = 3;
-    // TODO: Implement Edit feature
-    /*Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditRecipe(entryData: recipeEntry)))
-        .then((data) => setState(() => {}));*/
   }
 
   /*
@@ -130,9 +126,14 @@ class _RecipeDetailsState extends State<RecipeDetails> {
 
   /*
    *
-   * Delete Recipe
+   * Delete and Edit Recipe
    * 
    */
+  void pushEditEntry(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => EditRecipe(recipeData: recipeEntry)))
+        .then((data) => setState(() => {}));
+  }
+
   Widget verifyDeleteRecipe(BuildContext context, int id) {
     return AlertDialog(
         title: const Text('Delete Recipe?'),
