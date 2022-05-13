@@ -2,6 +2,7 @@ import json
 # import boto3
 import pymysql
 from get_function import getRecipes
+from post_function import postRecipe
 
 """
 # Get secrets information
@@ -48,7 +49,7 @@ def lambda_handler(event, context):
     elif event["rawPath"] == GET_RAW_PATH:
         return getRecipes(connection)
     elif event["rawPath"] == CREATE_RAW_PATH:
-        return postRecipe(event)
+        return postRecipe(connection, event)
     elif event["rawPath"] == PUT_RAW_PATH:
         return putRecipe(event)
     elif event["rawPath"] == DELETE_RAW_PATH:
@@ -58,47 +59,6 @@ def lambda_handler(event, context):
             'statuscode': 404,
             'body': json.dumps('Please enter a proper endpoint')
         }
-    
-    
-"""
-    POST endpoint
-    Add a new recipe
-"""
-def postRecipe(event):
-    newRecipe = json.loads(event["body"])
-    
-    cursor = connection.cursor()
-
-    # Post the recipe data first
-    cursor.execute(
-        f'INSERT INTO recipes_db.recipes(recipeName, instructions, author, publishDate, category)'
-        f'VALUES ("{newRecipe["recipeName"]}", "{newRecipe["instructions"]}", "{newRecipe["author"]}", CURDATE(), "{newRecipe["category"]}")'
-    )
-    connection.commit()
-
-    # Post ingredient data next
-    ingredients = newRecipe["ingredients"]
-    for ingredient in ingredients:
-        cursor.execute(
-            f'INSERT INTO recipes_db.ingredients(ingredientName, amount, unit, recipeID)'
-            f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}"))'
-        )
-        connection.commit()
-    
-    # Post image data
-    images = newRecipe["images"]
-    for image in images:
-        cursor.execute(
-            f'INSERT INTO recipes_db.images(imageURL, recipeID)'
-            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}"))'
-        )
-        connection.commit()
-        
-    return {
-        'statuscode': 200,
-        'message': json.dumps('Successfully added to database'),
-        'body': json.dumps(newRecipe)
-    }
 
 
 """
