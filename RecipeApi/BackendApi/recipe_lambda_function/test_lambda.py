@@ -59,7 +59,17 @@ class TestLambdaMethods(unittest.TestCase):
     """
     DELETE Endpoint Tests
     """
-    
+
+    """
+    Helper methods
+    """
+    def delete_recipe(self, recipeId):
+        # Set up lambda inputs
+        event = {"rawPath": self.DELETE_RAW_PATH, "body": json.dumps({"recipeId": recipeId})}
+        context = 1
+
+        res = lambda_handler(event, context)
+
 
 if __name__ == "__main__":
     unittest.main()
