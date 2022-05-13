@@ -35,7 +35,7 @@ def postRecipe(connection, event):
         connection.commit()
         
     return {
-        'statuscode': 200,
-        'message': json.dumps('Successfully added to database'),
+        'statusCode': 200,
+        'message': 'Successfully added to database',
         'body': json.dumps(newRecipe)
     }

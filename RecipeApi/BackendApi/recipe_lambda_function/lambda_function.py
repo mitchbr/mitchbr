@@ -110,7 +110,7 @@ def putRecipe(event):
         connection.commit()
         
     return {
-        'statuscode': 200,
+        'statusCode': 200,
         'message': json.dumps('Successfully added to database'),
         'body': json.dumps(recipe)
     }
@@ -152,6 +152,6 @@ def delRecipe(event):
     connection.commit()
     
     return {
-        'statuscode': 200,
+        'statusCode': 200,
         'message': json.dumps(f'Successfully deleted {deletedName[0]} from the database'),
     }
