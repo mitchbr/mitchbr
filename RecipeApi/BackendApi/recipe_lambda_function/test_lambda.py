@@ -31,13 +31,26 @@ class TestLambdaMethods(unittest.TestCase):
             postBody = json.load(f)
 
         # Set up lambda inputs
-        
         event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
         context = 1
 
         # Call lambda funciton
         res = lambda_handler(event, context)
         self.assertEqual(res['statusCode'], 200)
+
+    def test_post_duplicate(self):
+        # Get data from json file
+        with open("postRecipe.json") as f:
+            postBody = json.load(f)
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # Call lambda funciton -> Call twice to check duplicate data
+        res1 = lambda_handler(event, context)
+        res2 = lambda_handler(event, context)
+        self.assertEqual(res2['statusCode'], 200)
 
     """
     PUT Endpoint Tests
