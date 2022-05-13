@@ -9,6 +9,9 @@ def postRecipe(connection, event):
     
     cursor = connection.cursor()
 
+    # Verify this author hasn't already posted a recipe with this name
+    # TODO: implement
+
     # Post the recipe data first
     cursor.execute(
         f'INSERT INTO recipes_db.recipes(recipeName, instructions, author, publishDate, category)'
@@ -21,7 +24,8 @@ def postRecipe(connection, event):
     for ingredient in ingredients:
         cursor.execute(
             f'INSERT INTO recipes_db.ingredients(ingredientName, amount, unit, recipeID)'
-            f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}"))'
+            f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}",'
+            f'(SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"))'
         )
         connection.commit()
     
@@ -30,7 +34,7 @@ def postRecipe(connection, event):
     for image in images:
         cursor.execute(
             f'INSERT INTO recipes_db.images(imageURL, recipeID)'
-            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}"))'
+            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"))'
         )
         connection.commit()
         
