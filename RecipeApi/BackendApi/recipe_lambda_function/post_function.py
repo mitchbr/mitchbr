@@ -10,12 +10,20 @@ def postRecipe(connection, event):
     cursor = connection.cursor()
 
     # Verify this author hasn't already posted a recipe with this name
-    # TODO: implement
+    cursor.execute(
+        f'SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}";'
+    )
+    duplicate_check = cursor.fetchall()
+    if duplicate_check:
+        return {
+            'statusCode': 409,
+            'message': f'Recipe with name {newRecipe["recipeName"]} and author {newRecipe["author"]}, already exists in database'
+        }
 
     # Post the recipe data first
     cursor.execute(
         f'INSERT INTO recipes_db.recipes(recipeName, instructions, author, publishDate, category)'
-        f'VALUES ("{newRecipe["recipeName"]}", "{newRecipe["instructions"]}", "{newRecipe["author"]}", CURDATE(), "{newRecipe["category"]}")'
+        f'VALUES ("{newRecipe["recipeName"]}", "{newRecipe["instructions"]}", "{newRecipe["author"]}", CURDATE(), "{newRecipe["category"]}");'
     )
     connection.commit()
 
@@ -25,7 +33,7 @@ def postRecipe(connection, event):
         cursor.execute(
             f'INSERT INTO recipes_db.ingredients(ingredientName, amount, unit, recipeID)'
             f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}",'
-            f'(SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"))'
+            f'(SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"));'
         )
         connection.commit()
     
@@ -34,12 +42,24 @@ def postRecipe(connection, event):
     for image in images:
         cursor.execute(
             f'INSERT INTO recipes_db.images(imageURL, recipeID)'
-            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"))'
+            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}"));'
         )
         connection.commit()
+
+    # GET the new data posted to the DB
+    cursor.execute(
+        f'SELECT * FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}";'
+    )
+    newRecipeDb = cursor.fetchall()[0]
         
+    # TODO: Return recipe with ingredients and images
     return {
         'statusCode': 200,
         'message': 'Successfully added to database',
-        'body': json.dumps(newRecipe)
+        'body': json.dumps({"recipeId": newRecipeDb[0],
+                            "recipeName": newRecipeDb[1],
+                            "instructions": newRecipeDb[2],
+                            "author": newRecipeDb[3],
+                            "publishDate": newRecipeDb[4].strftime("%m-%d-%Y"),
+                            "category": newRecipeDb[5],})
     }
