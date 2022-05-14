@@ -13,7 +13,6 @@ class TestLambdaMethods(unittest.TestCase):
     """
     GET Endpoint Tests
     """
-
     def test_get(self):
         # Set up lambda inputs
         event = {"rawPath": self.GET_RAW_PATH}
