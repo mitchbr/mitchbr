@@ -3,6 +3,7 @@ import json
 
 from lambda_function import lambda_handler
 
+
 class TestLambdaMethods(unittest.TestCase):
     def setUp(self):
         self.GET_RAW_PATH = "/getRecipes"
@@ -35,10 +36,11 @@ class TestLambdaMethods(unittest.TestCase):
 
         # Call lambda funciton
         res = lambda_handler(event, context)
+        data = json.loads(res['body'])
+        self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
 
     def test_post_duplicate(self):
-        # TODO: Get working
         # Get data from json file
         with open("postRecipe.json") as f:
             postBody = json.load(f)
@@ -50,7 +52,12 @@ class TestLambdaMethods(unittest.TestCase):
         # Call lambda funciton -> Call twice to check duplicate data
         res1 = lambda_handler(event, context)
         res2 = lambda_handler(event, context)
-        self.assertEqual(res2['statusCode'], 200)
+
+
+        data1 = json.loads(res1['body'])
+        self.delete_recipe(data1['recipeId'])
+
+        self.assertEqual(res2['statusCode'], 409)
 
     """
     PUT Endpoint Tests
@@ -68,6 +75,7 @@ class TestLambdaMethods(unittest.TestCase):
         event = {"rawPath": self.DELETE_RAW_PATH, "body": json.dumps({"recipeId": recipeId})}
         context = 1
 
+        # TODO: Add an exception for when the DELETE fails
         res = lambda_handler(event, context)
 
 
