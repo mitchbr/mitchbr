@@ -22,6 +22,31 @@ class TestLambdaMethods(unittest.TestCase):
         res = lambda_handler(event, context)
         self.assertEqual(res['statusCode'], 200)
 
+    def test_get_no_ingredients(self):
+        # Get data from json file
+        with open("postRecipe.json") as f:
+            postBody = json.load(f)
+
+        # Remove ingredients prior to POST
+        postBody["ingredients"] = []
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # POST data
+        post_res = lambda_handler(event, context)
+
+        # Send GET request
+        event = {"rawPath": self.GET_RAW_PATH}
+        context = 1
+        get_res = lambda_handler(event, context)
+
+        data = json.loads(post_res['body'])
+        self.delete_recipe(data['recipeId'])
+
+        self.assertEqual(get_res['statusCode'], 200)
+
     """
     POST Endpoint Tests
     """
