@@ -116,18 +116,23 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.assertEqual(res2['statusCode'], 200)
 
-    def test_post_missing_name(self):
-        postBody = self.load_json()
-        del postBody["recipeName"]
+    def test_post_missing_param(self):
+        test_keys = ["recipeName", "instructions", "author", "category", "ingredients", "images"]
+        for key in test_keys:
+            postBody = self.load_json()
+            del postBody[key]
 
-        # Set up lambda inputs
-        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
-        context = 1
+            # Set up lambda inputs
+            event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+            context = 1
 
-        # Call lambda funciton
-        res = lambda_handler(event, context)
-        data = json.loads(res['body'])
-        self.delete_recipe(data['recipeId'])
+            # Call lambda funciton
+            res = lambda_handler(event, context)
+            data = json.loads(res['body'])
+            self.delete_recipe(data['recipeId'])
+            if res['statusCode'] != 200:
+                self.assertEqual(res['statusCode'], 200)
+
         self.assertEqual(res['statusCode'], 200)
 
     """
