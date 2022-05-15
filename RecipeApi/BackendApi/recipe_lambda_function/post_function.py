@@ -6,6 +6,16 @@ import json
 """
 def postRecipe(connection, event):
     newRecipe = json.loads(event["body"])
+
+    # Check if any keys are missing
+    req_keys = ["recipeName", "instructions", "author", "category", "ingredients", "images"]
+    for key in req_keys:
+        if key not in newRecipe:
+            if key == "ingredients" or key == "images":
+                newRecipe[key] = []
+            else:
+                newRecipe[key] = ""
+
     
     cursor = connection.cursor()
 
