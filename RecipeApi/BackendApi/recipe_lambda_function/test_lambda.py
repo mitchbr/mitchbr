@@ -225,6 +225,25 @@ class TestLambdaMethods(unittest.TestCase):
         self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
 
+    def test_put_no_images(self):
+        # Add something to the database first
+        data = self.post_recipe()
+        del data["images"]
+
+        # Set up lambda inputs
+        event = {"rawPath": self.PUT_RAW_PATH, "body": json.dumps(data)}
+        context = 1
+
+        # Call lambda funciton
+        res = lambda_handler(event, context)
+        try:
+            data = json.loads(res['body'])
+        except(ValueError):
+            print(f"Error updating item in DB, response: {res}")
+        
+        self.delete_recipe(data['recipeId'])
+        self.assertEqual(res['statusCode'], 200)
+
 
     """
     DELETE Endpoint Tests
