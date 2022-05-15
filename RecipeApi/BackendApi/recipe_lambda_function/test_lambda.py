@@ -10,22 +10,17 @@ class TestLambdaMethods(unittest.TestCase):
         self.CREATE_RAW_PATH = "/createRecipe"
         self.PUT_RAW_PATH = "/addIngredient"
         self.DELETE_RAW_PATH = "/deleteRecipe"
+        self.jsonFile = "postRecipe.json"
 
     """
     GET Endpoint Tests
     """
     def test_get(self):
-        # Set up lambda inputs
-        event = {"rawPath": self.GET_RAW_PATH}
-        context = 1
-
-        res = lambda_handler(event, context)
+        res = self.get_recipes()
         self.assertEqual(res['statusCode'], 200)
 
     def test_get_no_ingredients(self):
-        # Get data from json file
-        with open("postRecipe.json") as f:
-            postBody = json.load(f)
+        postBody = self.load_json()
 
         # Remove ingredients prior to POST
         postBody["ingredients"] = []
@@ -37,10 +32,7 @@ class TestLambdaMethods(unittest.TestCase):
         # POST data
         post_res = lambda_handler(event, context)
 
-        # Send GET request
-        event = {"rawPath": self.GET_RAW_PATH}
-        context = 1
-        get_res = lambda_handler(event, context)
+        get_res = self.get_recipes()
 
         data = json.loads(post_res['body'])
         self.delete_recipe(data['recipeId'])
@@ -51,9 +43,7 @@ class TestLambdaMethods(unittest.TestCase):
     POST Endpoint Tests
     """
     def test_post(self):
-        # Get data from json file
-        with open("postRecipe.json") as f:
-            postBody = json.load(f)
+        postBody = self.load_json()
 
         # Set up lambda inputs
         event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
@@ -66,9 +56,7 @@ class TestLambdaMethods(unittest.TestCase):
         self.assertEqual(res['statusCode'], 200)
 
     def test_post_duplicate(self):
-        # Get data from json file
-        with open("postRecipe.json") as f:
-            postBody = json.load(f)
+        postBody = self.load_json()
 
         # Set up lambda inputs
         event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
@@ -95,6 +83,18 @@ class TestLambdaMethods(unittest.TestCase):
     """
     Helper methods
     """
+    def load_json(self):
+        with open("postRecipe.json") as f:
+            postBody = json.load(f)
+
+    def get_recipes(self):
+
+        # Set up lambda inputs
+        event = {"rawPath": self.GET_RAW_PATH}
+        context = 1
+
+        return lambda_handler(event, context)
+
     def delete_recipe(self, recipeId):
         # Set up lambda inputs
         event = {"rawPath": self.DELETE_RAW_PATH, "body": json.dumps({"recipeId": recipeId})}
