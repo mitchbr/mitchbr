@@ -196,13 +196,35 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.delete_recipe(data['recipeId'])
         self.assertEqual(resPut['statusCode'], 400)
-        
-
-    def test_put_no_name_or_author(self):
-        self.assertTrue(True, True)
 
     def test_put_missing_params(self):
-        self.assertTrue(True, True)
+        postBody = self.load_json() 
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # Post recipe
+        res = lambda_handler(event, context)
+
+        test_keys = ["recipeName", "instructions", "author", "category", "ingredients", "images"]
+        for key in test_keys:
+            putBody = postBody
+            del putBody[key]
+
+            # Set up lambda inputs
+            event = {"rawPath": self.PUT_RAW_PATH, "body": json.dumps(putBody)}
+            context = 1
+
+            # Call lambda funciton
+            res = lambda_handler(event, context)
+            data = json.loads(res['body'])
+            if res['statusCode'] != 200:
+                self.delete_recipe(data['recipeId'])
+                self.assertEqual(res['statusCode'], 200)
+
+        self.delete_recipe(data['recipeId'])
+        self.assertEqual(res['statusCode'], 200)
 
     """
     DELETE Endpoint Tests
@@ -213,9 +235,9 @@ class TestLambdaMethods(unittest.TestCase):
     """
     def load_json(self):
         with open(self.jsonFile) as f:
-            postBody = json.load(f)
+            body = json.load(f)
         
-        return postBody
+        return body
 
     def get_recipes(self):
 
