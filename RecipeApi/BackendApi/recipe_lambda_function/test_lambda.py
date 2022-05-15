@@ -116,6 +116,20 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.assertEqual(res2['statusCode'], 200)
 
+    def test_post_missing_name(self):
+        postBody = self.load_json()
+        del postBody["recipeName"]
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # Call lambda funciton
+        res = lambda_handler(event, context)
+        data = json.loads(res['body'])
+        self.delete_recipe(data['recipeId'])
+        self.assertEqual(res['statusCode'], 200)
+
     """
     PUT Endpoint Tests
     """
