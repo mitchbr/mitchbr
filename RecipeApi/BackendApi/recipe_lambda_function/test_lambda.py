@@ -95,7 +95,6 @@ class TestLambdaMethods(unittest.TestCase):
 
     def test_post_same_name(self):
         postBody = self.load_json()
-        postBody["author"] = "Fake Name"
 
         # Set up lambda inputs
         event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
@@ -108,7 +107,6 @@ class TestLambdaMethods(unittest.TestCase):
         postBody["author"] = "Fake Name"
         event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
         res2 = lambda_handler(event, context)
-        print(res2)
 
 
         data = json.loads(res1['body'])
