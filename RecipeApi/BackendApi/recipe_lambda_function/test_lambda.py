@@ -39,6 +39,26 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.assertEqual(get_res['statusCode'], 200)
 
+    def test_get_no_images(self):
+        postBody = self.load_json()
+
+        # Remove ingredients prior to POST
+        postBody["images"] = []
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # POST data
+        post_res = lambda_handler(event, context)
+
+        get_res = self.get_recipes()
+
+        data = json.loads(post_res['body'])
+        self.delete_recipe(data['recipeId'])
+
+        self.assertEqual(get_res['statusCode'], 200)
+
     """
     POST Endpoint Tests
     """
