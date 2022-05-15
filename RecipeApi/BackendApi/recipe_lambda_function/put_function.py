@@ -50,6 +50,6 @@ def putRecipe(connection, event):
         
     return {
         'statusCode': 200,
-        'message': json.dumps('Successfully added to database'),
+        'message': 'Successfully updated recipe',
         'body': json.dumps(recipe)
     }

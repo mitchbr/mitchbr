@@ -167,8 +167,6 @@ class TestLambdaMethods(unittest.TestCase):
             data = json.loads(res['body'])
         except(ValueError):
             print(f"Error updating item in DB, response: {res}")
-
-        print(res)
         
         self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
