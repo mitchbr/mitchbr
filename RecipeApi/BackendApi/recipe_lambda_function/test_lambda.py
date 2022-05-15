@@ -9,7 +9,7 @@ class TestLambdaMethods(unittest.TestCase):
     def setUp(self):
         self.GET_RAW_PATH = "/getRecipes"
         self.CREATE_RAW_PATH = "/createRecipe"
-        self.PUT_RAW_PATH = "/addIngredient"
+        self.PUT_RAW_PATH = "/updateRecipe"
         self.DELETE_RAW_PATH = "/deleteRecipe"
         self.jsonFile = "postRecipe.json"
 
@@ -76,6 +76,7 @@ class TestLambdaMethods(unittest.TestCase):
             data = json.loads(res['body'])
         except(ValueError):
             print(f"Error adding item to DB, response: {res}")
+        
         self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
 
@@ -141,6 +142,36 @@ class TestLambdaMethods(unittest.TestCase):
     """
     PUT Endpoint Tests
     """
+    def test_put(self):
+        putBody = self.load_json()
+
+        # Add something to the database first
+         # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(putBody)}
+        context = 1
+
+        # Call lambda funciton
+        res = lambda_handler(event, context)
+        putBody["recipeId"] = json.loads(res["body"])["recipeId"]
+
+        # Change something for PUT
+        putBody["category"] = "Sauce"
+
+        # Set up lambda inputs
+        event = {"rawPath": self.PUT_RAW_PATH, "body": json.dumps(putBody)}
+        context = 1
+
+        # Call lambda funciton
+        res = lambda_handler(event, context)
+        try:
+            data = json.loads(res['body'])
+        except(ValueError):
+            print(f"Error updating item in DB, response: {res}")
+
+        print(res)
+        
+        self.delete_recipe(data['recipeId'])
+        self.assertEqual(res['statusCode'], 200)
 
     """
     DELETE Endpoint Tests
