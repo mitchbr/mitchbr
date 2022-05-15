@@ -93,6 +93,31 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.assertEqual(res2['statusCode'], 409)
 
+    def test_post_same_name(self):
+        postBody = self.load_json()
+        postBody["author"] = "Fake Name"
+
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # Post the first recipe
+        res1 = lambda_handler(event, context)
+
+        # Change the author prior to posting again
+        postBody["author"] = "Fake Name"
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        res2 = lambda_handler(event, context)
+        print(res2)
+
+
+        data = json.loads(res1['body'])
+        self.delete_recipe(data['recipeId'])
+        data = json.loads(res2['body'])
+        self.delete_recipe(data['recipeId'])
+
+        self.assertEqual(res2['statusCode'], 200)
+
     """
     PUT Endpoint Tests
     """
