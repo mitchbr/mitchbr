@@ -180,7 +180,11 @@ class TestLambdaMethods(unittest.TestCase):
         context = 1
 
         # Call lambda funciton
-        res = lambda_handler(event, context)
+        resPost = lambda_handler(event, context)
+        try:
+            data = json.loads(resPost['body'])
+        except(ValueError):
+            print(f"Error adding item to DB, response: {resPost}")
 
         # Send put without recipeId
         # Set up lambda inputs
@@ -188,14 +192,10 @@ class TestLambdaMethods(unittest.TestCase):
         context = 1
 
         # Call lambda funciton
-        res = lambda_handler(event, context)
-        try:
-            data = json.loads(res['body'])
-        except(ValueError):
-            print(f"Error updating item in DB, response: {res}")
+        resPut = lambda_handler(event, context)
 
         self.delete_recipe(data['recipeId'])
-        self.assertEqual(res['statusCode'], 200)
+        self.assertEqual(resPut['statusCode'], 400)
         
 
     def test_put_no_name_or_author(self):

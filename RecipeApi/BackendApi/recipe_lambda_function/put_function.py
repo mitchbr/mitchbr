@@ -6,6 +6,12 @@ import json
 """
 def putRecipe(connection, event):
     recipe = json.loads(event["body"])
+
+    if "recipeId" not in recipe:
+        return {
+        'statusCode': 400,
+        'message': 'Please provide a recipeId'
+    }
     
     cursor = connection.cursor()
 
