@@ -28,7 +28,8 @@ def putRecipe(connection, event):
     for ingredient in ingredients:
         cursor.execute(
             f'INSERT INTO recipes_db.ingredients(ingredientName, amount, unit, recipeID)'
-            f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{recipe["recipeName"]}"))'
+            f'VALUES ("{ingredient["ingredientName"]}", "{ingredient["ingredientAmount"]}", "{ingredient["ingredientUnit"]}",'
+            f'(SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{recipe["recipeName"]}" AND author = "{recipe["author"]}"))'
         )
         connection.commit()
 
@@ -44,7 +45,7 @@ def putRecipe(connection, event):
     for image in images:
         cursor.execute(
             f'INSERT INTO recipes_db.images(imageURL, recipeID)'
-            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{recipe["recipeName"]}"))'
+            f'VALUES ("{image}", (SELECT recipeID FROM recipes_db.recipes WHERE recipeName = "{recipe["recipeName"]}" AND author = "{recipe["author"]}"))'
         )
         connection.commit()
         
