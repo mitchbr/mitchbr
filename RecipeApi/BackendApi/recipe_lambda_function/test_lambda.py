@@ -1,3 +1,4 @@
+from turtle import position
 import unittest
 import json
 
@@ -104,8 +105,10 @@ class TestLambdaMethods(unittest.TestCase):
     Helper methods
     """
     def load_json(self):
-        with open("postRecipe.json") as f:
+        with open(self.jsonFile) as f:
             postBody = json.load(f)
+        
+        return postBody
 
     def get_recipes(self):
 
