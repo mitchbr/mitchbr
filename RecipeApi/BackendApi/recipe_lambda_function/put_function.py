@@ -30,7 +30,8 @@ def putRecipe(connection, event):
     connection.commit()
 
     # Update ingredient data
-    updateIngredients(connection, cursor, recipe)
+    if "ingredients" in recipe:
+        updateIngredients(connection, cursor, recipe)
 
     # Update image data
     updateImages(connection, cursor, recipe)
