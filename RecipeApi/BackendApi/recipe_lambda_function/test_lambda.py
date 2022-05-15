@@ -206,10 +206,12 @@ class TestLambdaMethods(unittest.TestCase):
 
         # Post recipe
         res = lambda_handler(event, context)
+        data = json.loads(res['body'])
+        print(data)
 
-        test_keys = ["recipeName", "instructions", "author", "category", "ingredients", "images"]
+        test_keys = ["recipeName", "instructions", "author", "category"]
         for key in test_keys:
-            putBody = postBody
+            putBody = data
             del putBody[key]
 
             # Set up lambda inputs
@@ -218,8 +220,8 @@ class TestLambdaMethods(unittest.TestCase):
 
             # Call lambda funciton
             res = lambda_handler(event, context)
-            data = json.loads(res['body'])
             if res['statusCode'] != 200:
+                print(res)
                 self.delete_recipe(data['recipeId'])
                 self.assertEqual(res['statusCode'], 200)
 
