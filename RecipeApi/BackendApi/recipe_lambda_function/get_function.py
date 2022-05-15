@@ -43,13 +43,17 @@ def getRecipes(connection):
 
     recipesList = []
     for row in recipeSql:
+        if row[0] not in ingredientsDict:
+            ingredientsResponse = []
+        else:
+            ingredientsResponse = ingredientsDict[row[0]]
         recipesList.append({"recipeId": row[0],
                             "recipeName": row[1],
                             "instructions": row[2],
                             "author": row[3],
                             "publishDate": row[4].strftime("%m-%d-%Y"),
                             "category": row[5],
-                            "ingredients": ingredientsDict[row[0]],
+                            "ingredients": ingredientsResponse,
                             "images": imagesDict[row[0]]})
 
     return {
