@@ -72,7 +72,10 @@ class TestLambdaMethods(unittest.TestCase):
 
         # Call lambda funciton
         res = lambda_handler(event, context)
-        data = json.loads(res['body'])
+        try:
+            data = json.loads(res['body'])
+        except(ValueError):
+            print(f"Error adding item to DB, response: {res}")
         self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
 
