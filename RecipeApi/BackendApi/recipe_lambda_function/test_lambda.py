@@ -276,7 +276,7 @@ class TestLambdaMethods(unittest.TestCase):
         resPost = lambda_handler(event, context)
         try:
             return json.loads(resPost['body'])
-        except(ValueError):
+        except(KeyError):
             print(f"Error adding item to DB, response: {resPost}")
 
     def delete_recipe(self, recipeId):

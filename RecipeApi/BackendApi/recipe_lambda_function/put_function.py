@@ -34,7 +34,8 @@ def putRecipe(connection, event):
         updateIngredients(connection, cursor, recipe)
 
     # Update image data
-    updateImages(connection, cursor, recipe)
+    if "images" in recipe:
+        updateImages(connection, cursor, recipe)
         
     return {
         'statusCode': 200,
