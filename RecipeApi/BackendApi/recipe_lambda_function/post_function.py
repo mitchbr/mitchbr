@@ -61,8 +61,27 @@ def postRecipe(connection, event):
         f'SELECT * FROM recipes_db.recipes WHERE recipeName = "{newRecipe["recipeName"]}" AND author = "{newRecipe["author"]}";'
     )
     newRecipeDb = cursor.fetchall()[0]
+
+    # Get ingredient data
+    cursor.execute(
+        f'SELECT * FROM recipes_db.ingredients WHERE recipeID = {newRecipeDb[0]};'
+    )
+    newRecipeIngredients = cursor.fetchall()
+    ingredientRes = []
+    for ingredient in newRecipeIngredients:
+        ingredientRes.append({"ingredientName": ingredient[1],
+                            "ingredientAmount": ingredient[2],
+                            "ingredientUnit": ingredient[3]})
         
-    # TODO: Return recipe with ingredients and images
+    # Get image data
+    cursor.execute(
+        f'SELECT * FROM recipes_db.images WHERE recipeID = {newRecipeDb[0]};'
+    )
+    newRecipeImages = cursor.fetchall()
+    imageRes = []
+    for image in newRecipeImages:
+        imageRes.append(image[1])
+
     return {
         'statusCode': 200,
         'message': 'Successfully added to database',
@@ -71,5 +90,7 @@ def postRecipe(connection, event):
                             "instructions": newRecipeDb[2],
                             "author": newRecipeDb[3],
                             "publishDate": newRecipeDb[4].strftime("%m-%d-%Y"),
-                            "category": newRecipeDb[5],})
+                            "category": newRecipeDb[5],
+                            "ingredients": ingredientRes,
+                            "images": imageRes})
     }
