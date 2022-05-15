@@ -146,13 +146,8 @@ class TestLambdaMethods(unittest.TestCase):
         putBody = self.load_json()
 
         # Add something to the database first
-        # Set up lambda inputs
-        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(putBody)}
-        context = 1
-
-        # Call lambda funciton
-        res = lambda_handler(event, context)
-        putBody["recipeId"] = json.loads(res["body"])["recipeId"]
+        data = self.post_recipe()
+        putBody["recipeId"] = data["recipeId"]
 
         # Change something for PUT
         putBody["category"] = "Sauce"
@@ -175,16 +170,7 @@ class TestLambdaMethods(unittest.TestCase):
         putBody = self.load_json()
         
         # Add something to the database first
-        # Set up lambda inputs
-        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(putBody)}
-        context = 1
-
-        # Call lambda funciton
-        resPost = lambda_handler(event, context)
-        try:
-            data = json.loads(resPost['body'])
-        except(ValueError):
-            print(f"Error adding item to DB, response: {resPost}")
+        data = self.post_recipe()
 
         # Send put without recipeId
         # Set up lambda inputs
@@ -198,16 +184,8 @@ class TestLambdaMethods(unittest.TestCase):
         self.assertEqual(resPut['statusCode'], 400)
 
     def test_put_missing_params(self):
-        postBody = self.load_json() 
-
-        # Set up lambda inputs
-        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
-        context = 1
-
-        # Post recipe
-        res = lambda_handler(event, context)
-        data = json.loads(res['body'])
-        print(data)
+        # Add something to the database first
+        data = self.post_recipe()
 
         test_keys = ["recipeName", "instructions", "author", "category"]
         for key in test_keys:
@@ -227,6 +205,26 @@ class TestLambdaMethods(unittest.TestCase):
 
         self.delete_recipe(data['recipeId'])
         self.assertEqual(res['statusCode'], 200)
+
+    def test_put_no_ingredients(self):
+        # Add something to the database first
+        data = self.post_recipe()
+        del data["ingredients"]
+
+        # Set up lambda inputs
+        event = {"rawPath": self.PUT_RAW_PATH, "body": json.dumps(data)}
+        context = 1
+
+        # Call lambda funciton
+        res = lambda_handler(event, context)
+        try:
+            data = json.loads(res['body'])
+        except(ValueError):
+            print(f"Error updating item in DB, response: {res}")
+        
+        self.delete_recipe(data['recipeId'])
+        self.assertEqual(res['statusCode'], 200)
+
 
     """
     DELETE Endpoint Tests
@@ -248,6 +246,19 @@ class TestLambdaMethods(unittest.TestCase):
         context = 1
 
         return lambda_handler(event, context)
+
+    def post_recipe(self):
+        postBody = self.load_json()
+        # Set up lambda inputs
+        event = {"rawPath": self.CREATE_RAW_PATH, "body": json.dumps(postBody)}
+        context = 1
+
+        # Call lambda funciton
+        resPost = lambda_handler(event, context)
+        try:
+            return json.loads(resPost['body'])
+        except(ValueError):
+            print(f"Error adding item to DB, response: {resPost}")
 
     def delete_recipe(self, recipeId):
         # Set up lambda inputs
