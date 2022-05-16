@@ -219,7 +219,8 @@ class TestLambdaMethods(unittest.TestCase):
 
     def test_delete_bad_id(self):
         res = self.call_lambda_handler(self.DELETE_RAW_PATH, json.dumps({"recipeId": 0}))
-        self.assertEqual(res['statusCode'], 200)
+        print(res)
+        self.assertEqual(res['statusCode'], 204)
 
     """
     Helper methods

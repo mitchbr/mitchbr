@@ -21,6 +21,11 @@ def delRecipe(connection, event):
         WHERE recipeID = {recipe["recipeId"]}'''
     )
     deletedName = cursor.fetchall()
+    if not deletedName:
+        return {
+            'statusCode': 204,
+            'message': f'recipeId {recipe["recipeId"]} not found in database'
+        }
 
     # Delete ingredient data
     cursor.execute(
