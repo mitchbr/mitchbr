@@ -6,6 +6,11 @@ import json
 """
 def delRecipe(connection, event):
     recipe = json.loads(event["body"])
+    if "recipeId" not in recipe:
+        return {
+            'statusCode': 400,
+            'message': f'recipeId required to delete'
+        }
     
     cursor = connection.cursor()
     
