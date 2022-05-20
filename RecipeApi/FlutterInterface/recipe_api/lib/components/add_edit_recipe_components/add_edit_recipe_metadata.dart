@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../recipe.dart';
-import 'package:recipe_api/components/new_recipe_components/new_recipe_ingredients.dart';
+import 'package:recipe_api/components/add_edit_recipe_components/add_edit_recipe_ingredients.dart';
 
-class NewRecipeMetadata extends StatefulWidget {
+class AddEditRecipeMetadata extends StatefulWidget {
   final Recipe? recipeData;
-  const NewRecipeMetadata({Key? key, this.recipeData}) : super(key: key);
+  const AddEditRecipeMetadata({Key? key, this.recipeData}) : super(key: key);
 
   @override
-  State<NewRecipeMetadata> createState() => _NewRecipeMetadataState();
+  State<AddEditRecipeMetadata> createState() => _AddEditRecipeMetadataState();
 }
 
-class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
+class _AddEditRecipeMetadataState extends State<AddEditRecipeMetadata> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _instructionsController = TextEditingController();
@@ -242,16 +242,16 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
             if (currState.validate()) {
               currState.save();
 
-              pushNewRecipeIngredients(context);
+              pushAddEditRecipeIngredients(context);
             }
           }
         },
         child: const Text('Next'));
   }
 
-  void pushNewRecipeIngredients(BuildContext context) {
-    Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewRecipeIngredients(recipeMetadata: entryData, tag: tag)))
+  void pushAddEditRecipeIngredients(BuildContext context) {
+    Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AddEditRecipeIngredients(recipeMetadata: entryData, tag: tag)))
         .then((data) => setState(() => {}));
   }
 }

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../recipe.dart';
-import 'package:recipe_api/components/new_recipe_components/new_recipe_preview.dart';
+import 'package:recipe_api/components/add_edit_recipe_components/add_edit_recipe_preview.dart';
 
-class NewRecipeIngredients extends StatefulWidget {
+class AddEditRecipeIngredients extends StatefulWidget {
   final Recipe recipeMetadata;
   final String tag;
-  const NewRecipeIngredients({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
+  const AddEditRecipeIngredients({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
 
   @override
-  State<NewRecipeIngredients> createState() => _NewRecipeIngredientsState();
+  State<AddEditRecipeIngredients> createState() => _AddEditRecipeIngredientsState();
 }
 
-class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
+class _AddEditRecipeIngredientsState extends State<AddEditRecipeIngredients> {
   final formKey = GlobalKey<FormState>();
   late Map<String, dynamic> currentIngredient = {};
   final TextEditingController _nameController = TextEditingController();
@@ -212,14 +212,14 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
           backgroundColor: Colors.purple, // TODO: Make this auto-update with style
         ),
         onPressed: () async {
-          pushNewRecipePreview(context);
+          pushAddEditRecipePreview(context);
         },
         child: const Text('Next'));
   }
 
-  void pushNewRecipePreview(BuildContext context) {
+  void pushAddEditRecipePreview(BuildContext context) {
     Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NewRecipePreview(recipeMetadata: entryData, tag: tag)))
+            context, MaterialPageRoute(builder: (context) => AddEditRecipePreview(recipeMetadata: entryData, tag: tag)))
         .then((data) => setState(() => {}));
   }
 }

@@ -4,16 +4,16 @@ import 'package:http/http.dart' as http;
 
 import '../recipe.dart';
 
-class NewRecipePreview extends StatefulWidget {
+class AddEditRecipePreview extends StatefulWidget {
   final Recipe recipeMetadata;
   final String tag;
-  const NewRecipePreview({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
+  const AddEditRecipePreview({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
 
   @override
-  State<NewRecipePreview> createState() => _NewRecipePreviewState();
+  State<AddEditRecipePreview> createState() => _AddEditRecipePreviewState();
 }
 
-class _NewRecipePreviewState extends State<NewRecipePreview> {
+class _AddEditRecipePreviewState extends State<AddEditRecipePreview> {
   late String tag;
   late Recipe entryData;
 

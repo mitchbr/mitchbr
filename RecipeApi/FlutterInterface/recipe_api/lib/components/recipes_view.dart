@@ -4,8 +4,7 @@ import 'dart:convert';
 
 import 'recipe.dart';
 import 'recipe_details.dart';
-import 'package:recipe_api/components/new_recipe_components/new_recipe_metadata.dart';
-import 'package:recipe_api/components/new_recipe_components/new_recipe_ingredients.dart';
+import 'package:recipe_api/components/add_edit_recipe_components/add_edit_recipe_metadata.dart';
 
 class RecipesView extends StatefulWidget {
   const RecipesView({Key? key}) : super(key: key);
@@ -98,7 +97,7 @@ class _RecipesViewState extends State<RecipesView> {
    * 
    */
   void pushNewEntry(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const NewRecipeMetadata()))
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEditRecipeMetadata()))
         .then((data) => setState(() => {}));
   }
 
