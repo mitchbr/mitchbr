@@ -34,8 +34,6 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
         title: const Text("Add Recipe"),
       ),
       body: formContent(context),
-      floatingActionButton: nextButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -57,7 +55,13 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ));
               } else if (index == formIngredients.length + 1) {
-                return newEntryBox();
+                return Column(
+                  children: [
+                    newEntryBox(),
+                    const SizedBox(height: 10),
+                    nextButton(context),
+                  ],
+                );
               } else {
                 return ingredientTile(index - 1);
               }
@@ -199,6 +203,12 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
    */
   Widget nextButton(BuildContext context) {
     return TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          primary: Colors.white,
+          textStyle: const TextStyle(fontSize: 20),
+          backgroundColor: Colors.purple, // TODO: Make this auto-update with style
+        ),
         onPressed: () async {
           entryData.ingredients = formIngredients;
           pushNewRecipePreview(context);

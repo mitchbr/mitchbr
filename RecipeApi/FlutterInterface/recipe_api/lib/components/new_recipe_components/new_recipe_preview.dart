@@ -28,8 +28,6 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
         title: const Text("Add Recipe"),
       ),
       body: bodyContent(context),
-      floatingActionButton: publishButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -45,7 +43,9 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
         if (index == 0) {
           return recipeMetaData();
         } else if (index == entryData.ingredients.length + 1) {
-          return recipeDetails();
+          return Column(
+            children: [recipeDetails(), const SizedBox(height: 10), publishButton(context)],
+          );
         } else {
           return ingredientTile(index - 1);
         }
@@ -90,10 +90,6 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
       )),
       ListTile(title: Text('Author: ${entryData.author}')),
       ListTile(title: Text('Category: ${entryData.category}')),
-      const ListTile(
-          title: SizedBox(
-        height: 20,
-      ))
     ]);
   }
 
@@ -112,6 +108,12 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
    */
   Widget publishButton(BuildContext context) {
     return TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          primary: Colors.white,
+          textStyle: const TextStyle(fontSize: 20),
+          backgroundColor: Colors.purple, // TODO: Make this auto-update with style
+        ),
         onPressed: () async {
           final postBody = entryData.toJson();
           await http.post(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/createRecipe'),

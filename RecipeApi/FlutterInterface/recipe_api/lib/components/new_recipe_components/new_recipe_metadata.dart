@@ -60,8 +60,6 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
         title: const Text("Add Recipe"),
       ),
       body: formContent(context),
-      floatingActionButton: nextButton(context),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -113,6 +111,8 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
             )),
         // TODO: Set author automatically
         authorTextField(),
+        const SizedBox(height: 10),
+        nextButton(context),
       ],
     ));
   }
@@ -214,6 +214,12 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
    */
   Widget nextButton(BuildContext context) {
     return TextButton(
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(16.0),
+          primary: Colors.white,
+          textStyle: const TextStyle(fontSize: 20),
+          backgroundColor: Colors.purple, // TODO: Make this auto-update with style
+        ),
         onPressed: () async {
           var currState = formKey.currentState;
           if (currState != null) {
