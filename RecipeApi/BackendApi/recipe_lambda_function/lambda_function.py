@@ -1,6 +1,6 @@
 import json
 import os
-# import boto3
+import boto3
 import pymysql
 from get_function import getRecipes
 from post_function import postRecipe
@@ -53,7 +53,6 @@ def db_connect():
         dbName = creds["db_name"]
     else:
         pass
-    '''
         # Get secrets information
         secrets_client = boto3.client('secretsmanager')
         secret_arn = 'arn:aws:secretsmanager:us-east-2:369135786923:secret:RecipeDbAccess-qYKVSd'
@@ -64,9 +63,6 @@ def db_connect():
         username = auth_json["username"]
         password = auth_json["password"]
         dbName = "recipes_db"
-    '''
-
-    
 
     # Connect to DB
     return pymysql.connect(host=endpoint, user=username, passwd=password, db=dbName)
