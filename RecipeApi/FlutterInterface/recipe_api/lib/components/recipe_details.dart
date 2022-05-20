@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:recipe_api/components/new_recipe_components/new_recipe_metadata.dart';
 
 import 'recipe.dart';
 import 'edit_recipe.dart';
@@ -39,7 +40,7 @@ class _RecipeDetailsState extends State<RecipeDetails> {
         Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () => pushEditEntry(context),
+            onPressed: () => pushNewEntry(context),
           ),
         ),
         Builder(
@@ -129,8 +130,8 @@ class _RecipeDetailsState extends State<RecipeDetails> {
    * Delete and Edit Recipe
    * 
    */
-  void pushEditEntry(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => EditRecipe(recipeData: recipeEntry)))
+  void pushNewEntry(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NewRecipeMetadata(recipeData: recipeEntry)))
         .then((data) => setState(() => {}));
   }
 

@@ -6,17 +6,20 @@ import '../recipe.dart';
 
 class NewRecipePreview extends StatefulWidget {
   final Recipe recipeMetadata;
-  const NewRecipePreview({Key? key, required this.recipeMetadata}) : super(key: key);
+  final String tag;
+  const NewRecipePreview({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
 
   @override
   State<NewRecipePreview> createState() => _NewRecipePreviewState();
 }
 
 class _NewRecipePreviewState extends State<NewRecipePreview> {
+  late String tag;
   late Recipe entryData;
 
   @override
   void initState() {
+    tag = widget.tag;
     entryData = widget.recipeMetadata;
     super.initState();
   }
@@ -25,7 +28,7 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Recipe"),
+        title: Text("$tag Recipe"),
       ),
       body: bodyContent(context),
     );
@@ -115,16 +118,26 @@ class _NewRecipePreviewState extends State<NewRecipePreview> {
           backgroundColor: Colors.purple, // TODO: Make this auto-update with style
         ),
         onPressed: () async {
-          final postBody = entryData.toJson();
-          await http.post(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/createRecipe'),
-              headers: <String, String>{
-                'Content-Type': 'application/json; charset=UTF-8',
-              },
-              body: jsonEncode(postBody));
+          final httpBody = entryData.toJson();
+          if (tag == 'Add') {
+            await http.post(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/createRecipe'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: jsonEncode(httpBody));
+          } else {
+            http.put(Uri.parse('https://i4yiwtjkg7.execute-api.us-east-2.amazonaws.com/updateRecipe'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: jsonEncode(httpBody));
+          }
 
           Navigator.of(context).pop();
           Navigator.of(context).pop();
           Navigator.of(context).pop();
+          Navigator.of(context).pop();
+          // TODO: Navigate back to recipe, stop popping 4 times
         },
         child: const Text('Publish'));
   }

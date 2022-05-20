@@ -6,7 +6,8 @@ import '../recipe.dart';
 import 'package:recipe_api/components/new_recipe_components/new_recipe_ingredients.dart';
 
 class NewRecipeMetadata extends StatefulWidget {
-  const NewRecipeMetadata({Key? key}) : super(key: key);
+  final Recipe? recipeData;
+  const NewRecipeMetadata({Key? key, this.recipeData}) : super(key: key);
 
   @override
   State<NewRecipeMetadata> createState() => _NewRecipeMetadataState();
@@ -20,21 +21,32 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
 
   late List<String> _categories = [""];
   String _category = "";
-
-  var entryData = Recipe(
-    recipeId: 0,
-    recipeName: '',
-    instructions: '',
-    author: '',
-    publishDate: DateTime.now(),
-    category: '',
-    ingredients: [],
-    images: [],
-  );
+  late Recipe entryData;
+  late String tag;
 
   @override
   void initState() {
-    loadFromJson();
+    if (widget.recipeData != null) {
+      tag = 'Edit';
+      entryData = widget.recipeData!;
+      _nameController.text = entryData.recipeName;
+      _instructionsController.text = entryData.instructions;
+      _authorController.text = entryData.author;
+      loadFromJson(entryData.category);
+    } else {
+      tag = 'Add';
+      entryData = Recipe(
+        recipeId: 0,
+        recipeName: '',
+        instructions: '',
+        author: '',
+        publishDate: DateTime.now(),
+        category: '',
+        ingredients: [],
+        images: [],
+      );
+      loadFromJson("");
+    }
     super.initState();
   }
 
@@ -43,12 +55,16 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
    * Load category data
    * 
    */
-  void loadFromJson() async {
+  void loadFromJson(String startCategory) async {
     final String response = await rootBundle.loadString('assets/recipe_categories.json');
     final data = await json.decode(response);
     setState(() {
       _categories = data["categories"].cast<String>();
-      _category = data["categories"][0];
+      if (startCategory == "") {
+        _category = data["categories"][0];
+      } else {
+        _category = startCategory;
+      }
       entryData.category = _category;
     });
   }
@@ -57,7 +73,7 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Recipe"),
+        title: Text("$tag Recipe"),
       ),
       body: formContent(context),
     );
@@ -234,7 +250,8 @@ class _NewRecipeMetadataState extends State<NewRecipeMetadata> {
   }
 
   void pushNewRecipeIngredients(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewRecipeIngredients(recipeMetadata: entryData)))
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewRecipeIngredients(recipeMetadata: entryData, tag: tag)))
         .then((data) => setState(() => {}));
   }
 }

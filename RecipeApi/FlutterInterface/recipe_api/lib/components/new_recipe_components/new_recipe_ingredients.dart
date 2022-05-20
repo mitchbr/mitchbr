@@ -5,7 +5,8 @@ import 'package:recipe_api/components/new_recipe_components/new_recipe_preview.d
 
 class NewRecipeIngredients extends StatefulWidget {
   final Recipe recipeMetadata;
-  const NewRecipeIngredients({Key? key, required this.recipeMetadata}) : super(key: key);
+  final String tag;
+  const NewRecipeIngredients({Key? key, required this.recipeMetadata, required this.tag}) : super(key: key);
 
   @override
   State<NewRecipeIngredients> createState() => _NewRecipeIngredientsState();
@@ -13,16 +14,17 @@ class NewRecipeIngredients extends StatefulWidget {
 
 class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
   final formKey = GlobalKey<FormState>();
-  List<Map> formIngredients = [];
   late Map<String, dynamic> currentIngredient = {};
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _unitController = TextEditingController();
 
+  late String tag;
   late Recipe entryData;
 
   @override
   void initState() {
+    tag = widget.tag;
     entryData = widget.recipeMetadata;
     super.initState();
   }
@@ -31,7 +33,7 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Recipe"),
+        title: Text("$tag Recipe"),
       ),
       body: formContent(context),
     );
@@ -46,7 +48,7 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
     return Padding(
         padding: const EdgeInsets.all(20),
         child: ListView.builder(
-            itemCount: formIngredients.length + 2,
+            itemCount: entryData.ingredients.length + 2,
             itemBuilder: (context, index) {
               if (index == 0) {
                 return const ListTile(
@@ -54,7 +56,7 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
                   'Ingredients',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ));
-              } else if (index == formIngredients.length + 1) {
+              } else if (index == entryData.ingredients.length + 1) {
                 return Column(
                   children: [
                     newEntryBox(),
@@ -167,7 +169,7 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
         currState.save();
 
         setState(() {
-          formIngredients.add(currentIngredient);
+          entryData.ingredients.add(currentIngredient);
           _nameController.clear();
           _amountController.clear();
           _unitController.clear();
@@ -183,16 +185,16 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
    */
   Widget ingredientTile(int index) {
     return ListTile(
-      title: Text('${formIngredients[index]['ingredientName']} '
-          '(${formIngredients[index]['ingredientAmount']} '
-          '${formIngredients[index]['ingredientUnit']})'),
+      title: Text('${entryData.ingredients[index]['ingredientName']} '
+          '(${entryData.ingredients[index]['ingredientAmount']} '
+          '${entryData.ingredients[index]['ingredientUnit']})'),
       trailing: IconButton(onPressed: (() => removeIngredient(index)), icon: const Icon(Icons.close)),
     );
   }
 
   void removeIngredient(int index) {
     setState(() {
-      formIngredients.removeAt(index);
+      entryData.ingredients.removeAt(index);
     });
   }
 
@@ -210,14 +212,14 @@ class _NewRecipeIngredientsState extends State<NewRecipeIngredients> {
           backgroundColor: Colors.purple, // TODO: Make this auto-update with style
         ),
         onPressed: () async {
-          entryData.ingredients = formIngredients;
           pushNewRecipePreview(context);
         },
         child: const Text('Next'));
   }
 
   void pushNewRecipePreview(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NewRecipePreview(recipeMetadata: entryData)))
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewRecipePreview(recipeMetadata: entryData, tag: tag)))
         .then((data) => setState(() => {}));
   }
 }
