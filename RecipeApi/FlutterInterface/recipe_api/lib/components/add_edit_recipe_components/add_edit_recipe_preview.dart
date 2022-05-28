@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 import '../recipe.dart';
 
@@ -64,6 +65,12 @@ class _AddEditRecipePreviewState extends State<AddEditRecipePreview> {
   Widget recipeMetaData() {
     return Column(
       children: [
+        Image.file(
+          File(entryData.images[0]),
+          width: 160,
+          height: 160,
+          fit: BoxFit.cover,
+        ),
         ListTile(
             title: Text(
           entryData.recipeName,

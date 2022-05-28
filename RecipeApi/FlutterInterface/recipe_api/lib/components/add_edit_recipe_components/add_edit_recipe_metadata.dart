@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 import '../recipe.dart';
-import 'package:recipe_api/components/add_edit_recipe_components/add_edit_recipe_ingredients.dart';
+import 'add_edit_recipe_images.dart';
 
 class AddEditRecipeMetadata extends StatefulWidget {
   final Recipe? recipeData;
@@ -250,8 +250,8 @@ class _AddEditRecipeMetadataState extends State<AddEditRecipeMetadata> {
   }
 
   void pushAddEditRecipeIngredients(BuildContext context) {
-    Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddEditRecipeIngredients(recipeMetadata: entryData, tag: tag)))
+    Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddEditRecipeImages(recipeMetadata: entryData, tag: tag)))
         .then((data) => setState(() => {}));
   }
 }
