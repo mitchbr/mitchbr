@@ -55,23 +55,24 @@ class _AddEditRecipeImagesState extends State<AddEditRecipeImages> {
   Widget formContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: Column(children: [
+      child: Center(
+          child: Column(children: [
         image != null
-            ? Image.file(
-                image!,
-                width: 160,
-                height: 160,
-                fit: BoxFit.cover,
+            ? FittedBox(
+                child: Image.file(image!),
+                fit: BoxFit.fill,
               )
-            : FlutterLogo(
-                size: 160,
-              ),
-        TextButton(
-          child: Text('Choose from Gallery'),
-          onPressed: () => pickImageGallery(),
-        ),
-        nextButton(context),
-      ]),
+            : ElevatedButton(child: const Text('Choose from Gallery'), onPressed: () => pickImageGallery()),
+        const SizedBox(height: 20),
+        image != null
+            ? ElevatedButton(
+                child: const Text('Change Image'),
+                onPressed: () => pickImageGallery(),
+              )
+            : SizedBox(height: 2),
+        const SizedBox(height: 20),
+        image != null ? nextButton(context) : SizedBox(height: 0),
+      ])),
     );
   }
 
@@ -81,13 +82,7 @@ class _AddEditRecipeImagesState extends State<AddEditRecipeImages> {
    * 
    */
   Widget nextButton(BuildContext context) {
-    return TextButton(
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(16.0),
-          primary: Colors.white,
-          textStyle: const TextStyle(fontSize: 20),
-          backgroundColor: Colors.purple, // TODO: Make this auto-update with style
-        ),
+    return ElevatedButton(
         onPressed: () async {
           addImageToRecipe();
           pushAddEditRecipePreview(context);

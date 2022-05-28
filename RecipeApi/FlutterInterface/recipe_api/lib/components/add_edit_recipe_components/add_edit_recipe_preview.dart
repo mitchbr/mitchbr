@@ -65,11 +65,11 @@ class _AddEditRecipePreviewState extends State<AddEditRecipePreview> {
   Widget recipeMetaData() {
     return Column(
       children: [
-        Image.file(
-          File(entryData.images[0]),
-          width: 160,
-          height: 160,
-          fit: BoxFit.cover,
+        FittedBox(
+          child: Image.file(
+            File(entryData.images[0]),
+          ),
+          fit: BoxFit.fill,
         ),
         ListTile(
             title: Text(
