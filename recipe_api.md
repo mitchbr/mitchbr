@@ -8,7 +8,7 @@ This API was developed both to learn AWS skills, as well as to integrate with th
 
 The endpoints are as follows:
 
-![API Endpoints]((images/RecipeApi/ApiEndpoints.png))
+![API Endpoints](images/RecipeApi/ApiEndpoints.png)
 
 As you can see, there are four primary groups: recipes, images, ingredients, and authors. Recipes endpoints are for interacting with recipe metadata such as recipe name, author, and instructions. Images endpoints allow images related to those recipes to be stored and retrieved. Authors allows new users to be added, and for users to 'follow' one another. This will eventually allow users to follow each others recipes as they post them.
 
