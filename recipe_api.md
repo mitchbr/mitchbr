@@ -1,6 +1,6 @@
 # Recipe AWS API
 
-This API was developed both to learn AWS skills, as well as to integrate with the Grocery List App in the future. Utilizing RESTful principles, this API uses HTTP requests to retrieve and upload user's recipes
+This API was developed both to learn AWS skills, as well as to integrate with the Grocery List App in the future. Utilizing RESTful principles, this API uses HTTP requests to retrieve and upload user's recipes.
 
 ### API Structure
 
@@ -31,9 +31,11 @@ Currently, the database has two tables, recipes and ingredients. As the names su
 ![Database Schema](images/RecipeApi/dbSchema.png)
 
 ### Trying the API
-There is a [Postman Collection](https://web.postman.co/workspace/My-Workspace~4d525aab-f050-462c-8b0f-26a21dae4de1/collection/21203434-f5892415-d1dc-4585-b828-b9ceb60b9297) for this API which allows you to view the various endpoints, and try them out for yourself.
+The app is available for use on the web here: https://mitchbr.github.io/RecipeApi/#/ The app is primarily designed for mobile, so it will look much better if loaded on a phone. The web design is currently under development.
   
 There is also a Flutter application which I am using as a test area before integrating this API with the Grocery Tracker app. The [Android Build](https://github.com/mitchbr/RecipeApi/tree/main/Flutter%20Builds/Android) is available for download if you would like to try it yourself.
+  
+There is a [Postman Collection](https://web.postman.co/workspace/My-Workspace~4d525aab-f050-462c-8b0f-26a21dae4de1/collection/21203434-f5892415-d1dc-4585-b828-b9ceb60b9297) for this API which allows you to view the various endpoints, and try them out for yourself.
   
 ### Source Code
 The source code for each API call can be found [here](https://github.com/mitchbr/mitchbr/blob/master/RecipeApi/lambda_function.py)
