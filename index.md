@@ -1,6 +1,6 @@
 ## Mitchell Brown's Github Portfolio Page
 
-This repository contains both school and personal portfolio projects written in a variety of languages. I am currently in the process of completing a Computer Science degree through Oregon State University, and also possess a Mechanical Engineering degree from OSU.
+Welcome to my projects portfolio! This is a collection of projects I have worked on recently, from backend Python APIs to frontend Flutter applications, and even into high performance C++ audio applications. I am a recent graduate in Computer Science and Mechanical Engineering, in search of a backend or full stack software engineering position.
 
 ### Highlighted Projects
  - [Grocery List App](grocery_list_app.md)
