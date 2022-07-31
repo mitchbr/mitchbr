@@ -27,6 +27,6 @@ Some items I would like to add to the app to improve its functionality:
  - Add estimated price and/or coupons for items
 
 ### Source Code
-The source code can be found [here](https://github.com/mitchbr/mitchbr/tree/master/Grocery%20List%20App)
+The source code can be found [here](https://github.com/mitchbr/GroceryListApp)
 
 ### [Return to the Homepage](index.md)
