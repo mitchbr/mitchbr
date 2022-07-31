@@ -18,7 +18,7 @@ For now, ingredients only has a GET endpoint, I am currently deciding how to go 
 
 ![The API Structure](images/RecipeApi/awsDiagram.png)
 
-As seen in this diagram, both the recipes and ingredients endpoints call AWS Relational Database Service (RDS). I chose this service so I could use a MySQL database, and allow my to flex many SQL capabilities. For example, I plan to be able to 'Filter' and 'Sort' by data in my apps in the future. In addition to this, I would like to be able to find 'similar recipes' by using the ingredients table.
+As seen in this diagram, both the recipes and ingredients endpoints call AWS Relational Database Service (RDS). I chose this service so I could use a MySQL database, and allow me to utilize many SQL capabilities. For example, I plan to be able to 'Filter' and 'Sort' by data in my apps in the future. In addition to this, I would like to be able to find 'similar recipes' by using the ingredients table.
 
 The images endpoints go straight to S3. I did this to simplify implementation of image storage, and I have found S3 to be the best method for storing large amounts of data in formats like images.
 
