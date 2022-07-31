@@ -38,6 +38,6 @@ There is also a Flutter application which I am using as a test area before integ
 There is a [Postman Collection](https://web.postman.co/workspace/My-Workspace~4d525aab-f050-462c-8b0f-26a21dae4de1/collection/21203434-f5892415-d1dc-4585-b828-b9ceb60b9297) for this API which allows you to view the various endpoints, and try them out for yourself.
   
 ### Source Code
-The source code for each API call can be found [here](https://github.com/mitchbr/mitchbr/blob/master/RecipeApi/lambda_function.py)
+The source code for the API can be found [here](https://github.com/mitchbr/RecipeApi)
   
 ### [Return to the Homepage](index.md)
