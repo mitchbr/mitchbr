@@ -31,7 +31,7 @@ Currently, the database has two tables, recipes and ingredients. As the names su
 ![Database Schema](images/RecipeApi/dbSchema.png)
 
 ### Trying the API
-The app is available for use on the web here: https://mitchbr.github.io/RecipeApi/#/ The app is primarily designed for mobile, so it will look much better if loaded on a phone. The web design is currently under development.
+The app is available for use on the web here: [https://mitchbr.github.io/RecipeApi/#/](https://mitchbr.github.io/RecipeApi/#/) The app is primarily designed for mobile, so it will look much better if loaded on a phone. The web design is currently under development.
   
 There is also a Flutter application which I am using as a test area before integrating this API with the Grocery Tracker app. The [Android Build](https://github.com/mitchbr/RecipeApi/tree/main/Flutter%20Builds/Android) is available for download if you would like to try it yourself.
   
