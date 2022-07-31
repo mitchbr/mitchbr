@@ -22,6 +22,6 @@ Red Guard was used prior to adding fiberglass as it would prevent the epoxy from
 # Final Report
 For more imformation on the senior design project, here is the final report submitted by myself and my team.
 
-[View the Final Design Report](https://github.com/mitchbr/mitchbr/blob/master/Non%20Software%20Projects/Senior%20Design/Final%20Report.pdf)
+[View the Final Design Report](https://github.com/mitchbr/mitchbr/blob/master/Design%20Proposal.pdf)
 
 ### [Return to the Homepage](index.md)
