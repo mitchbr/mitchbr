@@ -17,14 +17,7 @@ The recipes page is used for storing favorite recipes in a central location, whe
 
 
 ### Future plans
-
-Some items I would like to add to the app to improve its functionality:
-
- - Keep checklist items after marked; move them to the bottom and draw line through them
- - Get ReorderableListView working. Currently does has the option to drag and drop, but list does not update properly
- - Add amounts for each item, allowing the user to remember how much of something they want (ie 2 apples)
- - Integrate the Recipe API to let the user explore fun recipes published by others
- - Add estimated price and/or coupons for items
+Currently, I'm finishing up my recipe API, as well as making a PoC mobile app which utilizes its endpoints. The plan with this is to begin integrating the API endpoints into the grocery list app. I'm hoping to have a method to upload recipes, follow other users, and share recipes with each other. I have been creating a design which can be viewed on [Moqups](https://app.moqups.com/MltxY1FjFnH79G6LCsYqQ0UeCczZlPha/view/page/ad64222d5)
 
 ### Source Code
 The source code can be found [here](https://github.com/mitchbr/GroceryListApp)
