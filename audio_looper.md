@@ -39,12 +39,8 @@ loop.
 undo more than once will continue to undo audio loops until there are none. Top Information Box
 - There are no controls here, but it does provide information on the BPM and loop length, set up in the initial interface.
 
-### Source code
-The source code can be foud [here](https://github.com/mitchbr/AudioLoopStation/tree/main/SfmlAudioLoopStation)
-
+### Project Video
 A video showing my demonstration of the project can be seen here:
 [![Open Youtube Link](https://www.youtube.com/watch?v=a_a3-eQWc80)](https://www.youtube.com/watch?v=a_a3-eQWc80)
-
-
 
 ### [Return to the Homepage](index.md)
