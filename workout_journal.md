@@ -4,6 +4,7 @@ This project is my place for testing and learning new features using the React l
 
 ### Project Resources
 The project can be found by visiting [https://mitchbr.github.io/WorkoutJournal/](https://mitchbr.github.io/WorkoutJournal/)
+
 The source code can be found [here](https://github.com/mitchbr/WorkoutJournal)
 
 ### [Return to the Homepage](index.md)
