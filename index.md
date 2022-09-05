@@ -7,16 +7,20 @@ Welcome to my projects portfolio! This is a collection of projects I have worked
     - An API developed both to learn AWS skills, as well as to integrate with the Grocery List App in the future. This API provides the capabilities to upload, retrieve, update, and delete recipes. In addition, images associated with those recipes can be uploaded, downloaded, and deleted.
     - Utilizes AWS services including API Gateway, Lambda, S3, Secrets Manager, and RDS. Lambda functions are written in Python 3.
  
+  - [Workout Journal](workout_journal.md)
+    - A simple web CRUD app created as a place for me to learn and work with React. The user may create and view a log of their workouts.
+    - Utilizes Javascript with the React library, as well as CSS
+ 
  - [Grocery List App](grocery_list_app.md)
     - A simple mobile application with the purpose of improving the grocery shopping experience. Contains a page for creating a checklist, as well as a page for saving your favorite recipes. Ingredients from recipes can be added to the checklist to quickly make dinner plans and create a shopping list
     - Utilizes Flutter with SQLite.
 
+### Other Software projects
  - [Digital Audio Loop Station](audio_looper.md)
     - A digital implementation of the audio looper device. Records and plays back an arbitrary number of loops, allowing the user to become a one-man band.
     - Utilizes C++ with the SFML library.
 
-### Other Software projects
- - [Miscellaneous Projects](miscellaneous_projects.md)
+- [Miscellaneous Projects](miscellaneous_projects.md)
     - Older projects, primarily created in school on my journey to becoming a software engineer.
 
 ### Non Software Projects
