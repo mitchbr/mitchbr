@@ -1,6 +1,8 @@
 # Mitchell Brown on GitHub
 Welcome to my GitHub! I have a few fun projects I have been working on which you can view here. I am currently a software engineer at Vacasa in Portland, OR.
 
+Let's connect on [LinkedIn](https://www.linkedin.com/in/mitchbr/)!
+
 # Current Projects
 ## Grocery List App
 https://github.com/mitchbr/grocery_list_app
@@ -20,6 +22,22 @@ Currently, I am running the app as a PWA on my devices. Originally, I ran an And
 The app is available at the below URL, and you can sign in with the user `mitchbr`. This is my test user, so you won't break anything! I haven't implemented any sort of sing-in or other security. Frankly, I'm not trying to open this project up for others except close family/friends to use, so I don't mind it being a bit insecure. Maybe I'll build or look into better auth someday.
 https://mitchbr.github.io/grocery_list_web/#/
 
+## Block Puller
+https://github.com/mitchbr/BlockPullApp
 
-# LinkedIn
-Let's connect on [LinkedIn](https://www.linkedin.com/in/mitchbr/)!
+While this repo contains the start of a react native app, the Arduino code is contained in the `/arduino/ble_scale` directory.
+
+A quick diversion from web apps, I decided I wanted to try out a fun Arduino project. The goal of this project was to clone a rock climbing training tool called a [tindeq progressor](https://tindeq.com/product/progressor/). What this progessor does is read force data and transmit via bluetooth low enegery (BLE). This tool, paired with something like a [Tension Block](https://tensionclimbing.com/product/the-block-2/), enables me to have highly precise data when it comes to training my finger muscles, a key part of training for rock climbing.
+
+With this bluetooth data, I hope to someday pull that data into an iOS app and have a more rich experience, such as having built in timers and force goals (Ie pull 80 lbs for 10 seconds). However, I've found some challenges with developing iOS apps that require bluetooth. As it turns out, I can't build web apps to use bluetooth, because the iOS webkit engine doesn't have bluetooth. An interesting thing with iOS is that _all_ browsers run on webkit, including chrome, so there is no way around this. I could build a native iOS app, but that requires the aforementioned Apple developer account. I'm more motivated to get the account, but it's on the backburner while I work on other things. For now I just use an iOS app that allows me to interface with BLE devices.
+
+## StickieDB
+Frontend: https://github.com/mitchbr/sticker_app
+
+Backend: https://github.com/mitchbr/sticker_api
+
+My most recent project, this is where I have began developing an API PoC which will be the first to be hosted on the raspberry pi. The API is built using Python's FastAPI, and I plan to use MongoDB for the database. The choice for NoSQL is admittedly quite simple; I don't use it day-to-day and want to get more hands on with it. Much of this is still in development but what I can say is I'm experimenting with many new things:
+1. Self-hosting an API and learning how to serve it up publicly
+2. HTTPS; something that's always been abstracted by AWS, I'm currently looking into obtaining certificates and enabling this API to be HTTPS.
+3. Standing up a local database. Again, something always handled using AWS or the serverless framework. This may even involve doing my own docker containers from scratch, TBD.
+
