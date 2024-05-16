@@ -25,8 +25,6 @@ https://mitchbr.github.io/grocery_list_web/#/
 ## Block Puller
 https://github.com/mitchbr/BlockPullApp
 
-While this repo contains the start of a react native app, the Arduino code is contained in the `/arduino/ble_scale` directory.
-
 A quick diversion from web apps, I decided I wanted to try out a fun Arduino project. The goal of this project was to clone a rock climbing training tool called a [tindeq progressor](https://tindeq.com/product/progressor/). What this progessor does is read force data and transmit via bluetooth low enegery (BLE). This tool, paired with something like a [Tension Block](https://tensionclimbing.com/product/the-block-2/), enables me to have highly precise data when it comes to training my finger muscles, a key part of training for rock climbing.
 
 With bluetooth transmission, I hope to someday pull that data into an iOS app and have a more rich experience, such as having built-in timers and force goals (Ie pull 100 lbs for 10 seconds). However, I've found some challenges with developing iOS apps that require bluetooth. As it turns out, I can't build web apps to use bluetooth, because the iOS webkit engine doesn't have bluetooth. An interesting thing with iOS is that _all_ browsers run on webkit, including chrome, so there is no way around this. I could build a native iOS app, but that requires the aforementioned Apple developer account. I'm more motivated to get the account, but it's on the backburner while I work on other things. For now I just use a simple iOS app that allows me to interface with BLE devices.
