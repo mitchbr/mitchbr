@@ -4,7 +4,7 @@ Welcome to my GitHub! I have a few fun projects I have been working on which you
 Let's connect on [LinkedIn](https://www.linkedin.com/in/mitchbr/)!
 
 # Current Projects
-## StickieDB
+## Raspberry Pi Hub
 mitchbr.dev
 https://github.com/mitchbr/pi-dashboard
 
