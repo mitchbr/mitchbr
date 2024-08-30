@@ -4,6 +4,12 @@ Welcome to my GitHub! I have a few fun projects I have been working on which you
 Let's connect on [LinkedIn](https://www.linkedin.com/in/mitchbr/)!
 
 # Current Projects
+## StickieDB
+mitchbr.dev
+https://github.com/mitchbr/pi-dashboard
+
+My most recent project, I've been learning about self hosting and React. mitchbr.dev is hosted on a raspberry pi 5 in my home office, and is exposed via cloudflare. The site itself is written in React with Typescript, and also contains a WebSocket. The /stats page connects to a WebSocket on the raspberry pi 5 and shows current statistics such as CPU and memory usage.
+
 ## Grocery List App
 https://github.com/mitchbr/grocery_list_app
 
@@ -28,16 +34,3 @@ https://github.com/mitchbr/BlockPullApp
 A quick diversion from web apps, I decided I wanted to try out a fun Arduino project. The goal of this project was to clone a rock climbing training tool called a [tindeq progressor](https://tindeq.com/product/progressor/). What this progessor does is read force data and transmit via bluetooth low enegery (BLE). This tool, paired with something like a [Tension Block](https://tensionclimbing.com/product/the-block-2/), enables me to have highly precise data when it comes to training my finger muscles, a key part of training for rock climbing.
 
 With bluetooth transmission, I hope to someday pull that data into an iOS app and have a more rich experience, such as having built-in timers and force goals (Ie pull 100 lbs for 10 seconds). However, I've found some challenges with developing iOS apps that require bluetooth. As it turns out, I can't build web apps to use bluetooth, because the iOS webkit engine doesn't have bluetooth. An interesting thing with iOS is that _all_ browsers run on webkit, including chrome, so there is no way around this. I could build a native iOS app, but that requires the aforementioned Apple developer account. I'm more motivated to get the account, but it's on the backburner while I work on other things. For now I just use a simple iOS app that allows me to interface with BLE devices.
-
-## StickieDB
-Frontend: https://github.com/mitchbr/sticker_app
-
-Backend: https://github.com/mitchbr/sticker_api
-
-My most recent project, this is where I have begun developing an API PoC (And related Flutter app) which will be the first to be hosted on the raspberry pi. The API is built using Python's FastAPI, and I plan to use a MongoDB NoSQL database. The choice for NoSQL is admittedly quite simple; I don't use it day-to-day and want to get more hands on with it. 
-
-Much of this is still in development but what I can say is I'm experimenting with many new things:
-1. Self-hosting an API and learning how to serve it up publicly
-2. HTTPS; something that's always been abstracted by AWS, I'm currently looking into obtaining certificates and enabling this API to be HTTPS.
-3. Standing up a local database. Again, something always handled using AWS or the serverless framework. This may even involve doing my own docker containers from scratch, TBD.
-
