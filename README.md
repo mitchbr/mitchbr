@@ -5,7 +5,7 @@ Let's connect on [LinkedIn](https://www.linkedin.com/in/mitchbr/)!
 
 # Current Projects
 ## Raspberry Pi Hub
-mitchbr.dev
+https://mitchbr.dev
 https://github.com/mitchbr/pi-dashboard
 
 My most recent project, I've been learning about self hosting and React. mitchbr.dev is hosted on a raspberry pi 5 in my home office, and is exposed via cloudflare. The site itself is written in React with Typescript, and also contains a WebSocket. The /stats page connects to a WebSocket on the raspberry pi 5 and shows current statistics such as CPU and memory usage.
